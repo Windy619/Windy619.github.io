@@ -1,11 +1,13 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import PipelineDoxo from '../../components/PipelineDoxo.astro';
 import Icon from '../../components/Icon.astro';
 import { categoriesProjet } from '../../data/site';
+import { captureDe } from '../../data/captures';
 
 export async function getStaticPaths() {
   const projets = (await getCollection('projets')).sort((a, b) => a.data.ordre - b.data.ordre);
@@ -26,6 +28,7 @@ const { Content } = await render(projet);
 const d = projet.data;
 const ambre = d.ton === 'ambre';
 const corps = (projet.body ?? '').trim();
+const capture = captureDe(projet.id);
 
 const libelleCat = (cat: string) =>
   categoriesProjet.find((c) => c.id === cat)?.libelle ?? cat;
@@ -87,7 +90,20 @@ const fiche: { cle: string; valeur: string }[] = [
   </div>
 
   <div class="wrap" style="padding-block-end: var(--sec-y)">
-    <Placeholder legende={d.captureLegende} large />
+    {
+      capture ? (
+        <Image
+          class="capture"
+          src={capture}
+          alt={`${d.titre} — ${d.captureLegende ?? 'capture d’écran'}`}
+          widths={[720, 1120, 2240]}
+          sizes="(min-width: 1168px) 1120px, 100vw"
+          loading="eager"
+        />
+      ) : (
+        <Placeholder legende={d.captureLegende} large />
+      )
+    }
 
     {
       d.kpis.length > 0 && (

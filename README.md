@@ -46,13 +46,25 @@ fiche projet. C’est là que peuvent aller des notes plus longues sur une étud
 
 ### Captures d’écran
 
-Les zones en pointillés attendent des images. Pour en poser une :
+Par convention de nommage : déposez `src/content/projets/<id>.png` à côté du
+Markdown du projet, et la capture remplace automatiquement le placeholder — sur
+la carte de la liste **et** sur la fiche. Rien à déclarer, rien à modifier dans
+le code.
 
-1. placez le fichier dans `src/assets/captures/` ;
-2. remplacez l’appel `<Placeholder />` par le composant `<Image />` d’Astro dans
-   `src/pages/projets/[id].astro` et `src/pages/projets/index.astro`.
+```
+src/content/projets/doxo.md   →   src/content/projets/doxo.png
+```
 
-Astro optimise et redimensionne alors les images au build.
+Formats acceptés : `png`, `jpg`, `jpeg`, `webp`, `avif`. Astro convertit en WebP,
+génère les tailles responsives et pose `width`/`height` pour éviter tout décalage
+au chargement. Capturez en 1440 × 900 sans redimensionner.
+
+Les projets sans fichier gardent leur placeholder : vous pouvez donc les ajouter
+un par un sans jamais casser le site.
+
+> **Avant de publier une capture d’une application cliente** : vérifiez qu’aucune
+> donnée personnelle ni raison sociale de client final n’y figure. Un jeu de
+> démonstration vaut mieux qu’un floutage.
 
 ### CV en PDF
 

@@ -1326,6 +1326,24 @@ a:hover {
   white-space: nowrap;
 }
 
+/* ---------- Captures d'ecran ---------- */
+
+.capture {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  background: var(--surface-3);
+}
+
+/* Sur les cartes de la liste, un rapport constant garde la grille reguliere ;
+   le cadrage part du haut a gauche, la ou se trouve l'essentiel d'une UI. */
+.capture--carte {
+  aspect-ratio: 47 / 30;
+  object-fit: cover;
+  object-position: top left;
+}
+
 /* Masquage par filtre : doit gagner sur les regles de classe. */
 [hidden] {
   display: none !important;

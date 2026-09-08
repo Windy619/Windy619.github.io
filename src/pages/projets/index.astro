@@ -1,8 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import { categoriesProjet } from '../../data/site';
+import { captureDe } from '../../data/captures';
 
 const projets = (await getCollection('projets')).sort((a, b) => a.data.ordre - b.data.ordre);
 
@@ -52,6 +54,7 @@ const categoriesUtilisees = categoriesProjet.filter((cat) =>
         projets.map((projet) => {
           const d = projet.data;
           const ambre = d.ton === 'ambre';
+          const capture = captureDe(projet.id);
           return (
             <article
               class:list={['card', 'projet-large', ambre && 'card--ambre']}
@@ -106,7 +109,18 @@ const categoriesUtilisees = categoriesProjet.filter((cat) =>
                 </p>
               </div>
 
-              <Placeholder legende={d.captureLegende} />
+              {capture ? (
+                <Image
+                  class="capture capture--carte"
+                  src={capture}
+                  alt={`${d.titre} — ${d.captureLegende ?? 'capture d’écran'}`}
+                  widths={[470, 940]}
+                  sizes="(min-width: 940px) 470px, 100vw"
+                  loading="lazy"
+                />
+              ) : (
+                <Placeholder legende={d.captureLegende} />
+              )}
             </article>
           );
         })
