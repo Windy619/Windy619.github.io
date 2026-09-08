@@ -18,7 +18,7 @@ interface Props {
   maxStack?: number;
 }
 
-const { id, data, maxStack = 5 } = Astro.props;
+const { id, data, maxStack = 8 } = Astro.props;
 const ambre = data.ton === 'ambre';
 
 const libelleCat = (cat: string) =>

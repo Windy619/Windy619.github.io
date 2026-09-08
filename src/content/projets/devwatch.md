@@ -10,7 +10,7 @@ contexte: 'Conception et développement solo'
 role: 'Développeur'
 periode: 'Depuis juil. 2026'
 categories: ['sre', 'ia', 'automatisation']
-stack: ['Laravel 13', 'PHP 8.3', 'Inertia.js', 'Vue 3', 'TypeScript', 'MySQL']
+stack: ['Laravel 13', 'PHP 8.3', 'Inertia.js', 'Vue 3', 'TypeScript', 'Tailwind 4', 'MySQL']
 services: ['Redis / Laravel Horizon', 'Laravel Reverb', 'MaxMind', 'AbuseIPDB', 'Mistral', 'n8n', 'GitLab CI']
 captureLegende: 'Vue incidents'
 kpis:
