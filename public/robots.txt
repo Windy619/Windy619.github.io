@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://windy619.github.io/sitemap-index.xml

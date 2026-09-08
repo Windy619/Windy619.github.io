@@ -1,0 +1,131 @@
+[
+  {
+    "id": "systemes-reseaux",
+    "ordre": 1,
+    "titre": "Systèmes & réseaux",
+    "icone": "server",
+    "resume": "Parcs Linux et Windows Server administrés et durcis, Active Directory, virtualisation, routage et segmentation.",
+    "accroche": "Le socle : sept ans d’administration de parcs hétérogènes.",
+    "points": [
+      "Administration et sécurisation de serveurs Linux (AlmaLinux, Debian, Ubuntu, Red Hat/CentOS) et Windows Server.",
+      "Active Directory, OpenLDAP, services de fichiers et d’impression sous Debian (Samba, CUPS).",
+      "Virtualisation Hyper-V, VMware, vCenter et vSphere.",
+      "TCP/IP, routage, VLAN, Spanning Tree, VPN, DNS, DHCP, HTTP, SMTP ; pare-feu pfSense, répartition F5 BIG-IP."
+    ],
+    "terrain": "SA TARATASY (Azure, AlmaLinux, Windows) et Madawatt / AD HOC Concept (infrastructure complète, postes et serveurs).",
+    "chips": ["AlmaLinux", "Active Directory", "VLAN"]
+  },
+  {
+    "id": "cloud-devops",
+    "ordre": 2,
+    "titre": "Cloud & DevOps",
+    "icone": "cloud",
+    "resume": "Infrastructure Azure et serveurs dédiés OVH, conteneurisation Docker, déploiements pilotés par pipelines.",
+    "accroche": "Du provisionnement de l’infrastructure au déploiement automatisé.",
+    "points": [
+      "Administration de l’infrastructure Microsoft Azure et des serveurs dédiés OVH.",
+      "Déploiement et administration d’applications et de sites conteneurisés avec Docker.",
+      "Conception et maintenance de pipelines GitLab CI/CD pour automatiser les mises en production.",
+      "Installation d’un cloud privé open source basé sur OpenNebula, accès sécurisés par SSH."
+    ],
+    "terrain": "SA TARATASY, et le mémoire de Master II consacré à la sécurité d’accès d’un cloud OpenNebula.",
+    "chips": ["Azure", "Docker", "GitLab CI"]
+  },
+  {
+    "id": "sre-observabilite",
+    "ordre": 3,
+    "titre": "SRE & observabilité",
+    "icone": "pulse",
+    "resume": "Supervision métriques et logs, alerting, analyse de journaux, gestion d’incidents et post-mortem.",
+    "accroche": "Voir avant que ça casse, et savoir quoi faire quand ça casse.",
+    "points": [
+      "Supervision des serveurs dédiés avec Grafana, Prometheus, Loki et Alertmanager.",
+      "Analyse des journaux système et applicatifs pour diagnostiquer et résoudre les incidents.",
+      "Supervision de parc et de postes clients avec Nagios, Centreon, GLPI et OCS Inventory.",
+      "Gestion d’incidents complète — astreinte, escalade, post-mortem — implémentée dans DevWatch."
+    ],
+    "terrain": "Dédiés OVH chez SA TARATASY, supervision Nagios/Centreon chez Madawatt, DevWatch en projet personnel.",
+    "chips": ["Prometheus", "Grafana", "Loki"]
+  },
+  {
+    "id": "devsecops",
+    "ordre": 4,
+    "titre": "DevSecOps",
+    "icone": "shield",
+    "resume": "Durcissement serveur et WAF applicatif, politiques de contrôle des sites hébergés, rapports d’incident.",
+    "accroche": "Le durcissement comme routine d’exploitation, pas comme audit ponctuel.",
+    "points": [
+      "Renforcement des serveurs AlmaLinux avec CSF et Imunify360.",
+      "Protection des applications web par règles ModSecurity personnalisées.",
+      "Définition des politiques de contrôle de sécurité des sites hébergés.",
+      "Rédaction de rapports d’incident : causes, impact, actions correctives, recommandations.",
+      "Détection d’intrusion par contrôle d’intégrité (AIDE) et audit de sécurité SGBD."
+    ],
+    "terrain": "Hébergement mutualisé et applications clientes de SA TARATASY, depuis 2021.",
+    "chips": ["ModSecurity", "CSF", "Imunify360"]
+  },
+  {
+    "id": "securite-conformite",
+    "ordre": 5,
+    "titre": "Sécurité & conformité",
+    "icone": "lock",
+    "resume": "Chiffrement au repos, intégrité des fichiers, SSO fédéré, cloisonnement des données et outillage RGPD.",
+    "accroche": "Sécurité inscrite dans le modèle de données, pas ajoutée après.",
+    "points": [
+      "Isolation multi-tenant à trois niveaux (tenant, client, établissement) verrouillée par 17 policies et une suite de tests d’architecture.",
+      "Chiffrement AES-256-GCM des documents au repos et empreintes SHA-256 revérifiées chaque nuit.",
+      "Authentification fédérée : SSO SAML 2.0 auto-hébergé contre Microsoft Entra ID, SSO Azure AD via Socialite.",
+      "Outils RGPD (droit d’accès et droit à l’effacement) et API REST versionnée protégée par Sanctum."
+    ],
+    "terrain": "DOXO (multi-tenant, chiffrement, RGPD), Prospection SMAC et Extranet SMAC (SSO, cloisonnement client).",
+    "chips": ["AES-256-GCM", "SAML 2.0", "RGPD"]
+  },
+  {
+    "id": "integration-ia",
+    "ordre": 6,
+    "titre": "Intégration IA",
+    "icone": "cpu",
+    "resume": "Extraction documentaire par schéma JSON et analyse de logs assistée, confiance et coordonnées conservées.",
+    "accroche": "L’IA dans un pipeline vérifiable, avec repli déterministe quand il existe.",
+    "points": [
+      "Extraction structurée par schéma JSON via Mistral OCR, avec conservation de la confiance, de la page et des coordonnées.",
+      "Lecture directe du XML CII pour les factures Factur-X / ZUGFeRD, sans appel OCR.",
+      "Segmentation de flux de pages en documents : code-barres, page blanche, mot-clé, regex, page colorée, analyse OCR.",
+      "Analyse de logs assistée par Mistral dans DevWatch."
+    ],
+    "terrain": "DOXO, en développement continu depuis novembre 2025, et DevWatch.",
+    "chips": ["Mistral OCR", "Factur-X", "JSON Schema"]
+  },
+  {
+    "id": "automatisation",
+    "ordre": 7,
+    "titre": "Automatisation",
+    "icone": "cycle",
+    "resume": "Pipelines de déploiement, agents de collecte Bash/systemd, files de traitement et enchaînements no-code.",
+    "accroche": "Tout geste répété deux fois devient un script ou un pipeline.",
+    "points": [
+      "Pipelines GitLab CI/CD pour automatiser les déploiements applicatifs.",
+      "Agent de collecte Bash/systemd déployé sur les serveurs Linux supervisés.",
+      "Notifications multi-canal et traitements asynchrones via Redis et Laravel Horizon.",
+      "Automatisation no-code par webhooks n8n ; ingestion documentaire par canaux surveillés."
+    ],
+    "terrain": "SA TARATASY (CI/CD), DevWatch (agents, files, webhooks), DOXO (canaux d’ingestion).",
+    "chips": ["Bash/systemd", "n8n", "Horizon"]
+  },
+  {
+    "id": "developpement",
+    "ordre": 8,
+    "titre": "Développement",
+    "icone": "code",
+    "resume": "Applications Laravel du diagnostic à la mise en production, front Blade ou Vue, bases relationnelles.",
+    "accroche": "Ce qui me permet d’accompagner une application jusqu’à la production.",
+    "points": [
+      "Développement et maintenance d’applications PHP/Laravel, du diagnostic à la mise en production.",
+      "Blade + Bootstrap 5 et Livewire, ou Inertia.js avec Vue 3 et TypeScript.",
+      "Bases de données MySQL, PostgreSQL, SQL Server et Oracle ; modélisation UML.",
+      "Diagnostic et maintenance de sites Joomla et WordPress, avec suivi technique des projets."
+    ],
+    "terrain": "DOXO, Prospection SMAC, Extranet Client SMAC, DevWatch, et les sites clients de SA TARATASY.",
+    "chips": ["Laravel", "Vue 3", "MySQL"]
+  }
+]

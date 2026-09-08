@@ -1,0 +1,53 @@
+---
+import { Font } from 'astro:assets';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import '../styles/global.css';
+
+interface Props {
+  titre: string;
+  description: string;
+  /** Titre de page brut, sans le suffixe d'identité. */
+  titreBrut?: boolean;
+}
+
+const { titre, description, titreBrut = false } = Astro.props;
+const titreComplet = titreBrut ? titre : `${titre} — ${site.nom}`;
+const canonique = new URL(Astro.url.pathname, Astro.site ?? 'https://windy619.github.io');
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titreComplet}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonique.href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="author" content={site.nom} />
+    <meta name="theme-color" content="#0b0f14" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={site.nom} />
+    <meta property="og:title" content={titreComplet} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonique.href} />
+    <meta name="twitter:card" content="summary" />
+
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-body" preload />
+    <Font cssVariable="--font-mono" />
+  </head>
+
+  <body>
+    <a class="skip" href="#contenu">Aller au contenu</a>
+    <Nav />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

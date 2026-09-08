@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout titre="Page introuvable" description="Cette page n’existe pas ou a été déplacée.">
+  <div class="wrap page-head">
+    <div class="flow-22">
+      <p class="eyebrow">Erreur 404</p>
+      <h1>Cette page n’existe pas — ou plus.</h1>
+      <p class="hero__intro">
+        Le chemin demandé ne correspond à aucune page du site. Les quatre destinations utiles sont
+        ci-dessous.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/">Accueil</a>
+        <a class="btn btn--ghost" href="/projets/">Projets</a>
+        <a class="btn btn--ghost" href="/expertise/">Expertise</a>
+        <a class="btn btn--ghost" href="/contact/">Contact</a>
+      </div>
+    </div>
+  </div>
+</Layout>

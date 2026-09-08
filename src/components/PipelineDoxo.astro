@@ -1,0 +1,196 @@
+---
+/**
+ * Schéma du pipeline d'ingestion de DOXO.
+ * Le conteneur .schema défile horizontalement sur petit écran.
+ */
+const boites = [
+  {
+    x: 0,
+    titre: 'Canaux surveillés',
+    sous: '5 sources',
+    fort: false,
+    details: ['dossier local · FTP', 'SFTP · SharePoint', 'IMAP'],
+  },
+  {
+    x: 220,
+    titre: 'Ingestion',
+    sous: 'file de traitement',
+    fort: false,
+    details: ['normalisation PDF', 'pdftk · Ghostscript'],
+  },
+  {
+    x: 440,
+    titre: 'Découpage',
+    sous: '6 règles de découpage',
+    fort: true,
+    details: ['code-barres', 'page blanche · mot-clé', 'regex · page colorée', 'analyse OCR'],
+  },
+  {
+    x: 660,
+    titre: 'Extraction',
+    sous: 'Mistral OCR · schéma JSON',
+    fort: true,
+    details: ['confiance conservée', 'page + coordonnées'],
+  },
+  {
+    x: 880,
+    titre: 'Restitution',
+    sous: 'API REST versionnée',
+    fort: false,
+    details: ['Laravel Sanctum', 'PDF chiffré au repos'],
+  },
+];
+
+const L = 176;
+const fleches = boites.slice(0, -1).map((b) => b.x + L + 8);
+---
+
+<div class="schema">
+  <svg viewBox="-2 0 1060 336" role="img" aria-labelledby="pipeline-titre pipeline-desc">
+    <title id="pipeline-titre">Pipeline d’ingestion documentaire de DOXO</title>
+    <desc id="pipeline-desc">
+      Cinq étapes enchaînées : canaux surveillés, ingestion, découpage, extraction, restitution. Les
+      factures Factur-X et ZUGFeRD contournent le découpage et l’extraction OCR : leur XML CII est lu
+      directement.
+    </desc>
+
+    <defs>
+      <marker
+        id="fl"
+        viewBox="0 0 10 10"
+        refX="8"
+        refY="5"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse"
+      >
+        <path class="tete" d="M 0 1 L 9 5 L 0 9 z" />
+      </marker>
+      <marker
+        id="fl-ambre"
+        viewBox="0 0 10 10"
+        refX="8"
+        refY="5"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse"
+      >
+        <path class="tete tete--ambre" d="M 0 1 L 9 5 L 0 9 z" />
+      </marker>
+    </defs>
+
+    <path
+      class="branche"
+      d="M 528 130 C 528 68 570 58 620 58 L 880 58 C 930 58 968 70 968 128"
+      marker-end="url(#fl-ambre)"
+    />
+    <text class="t-branche" x="754" y="46" text-anchor="middle">
+      Factur-X / ZUGFeRD — XML CII lu directement, sans appel OCR
+    </text>
+
+    {
+      fleches.map((x) => (
+        <line class="fleche" x1={x} y1="167" x2={x + 28} y2="167" marker-end="url(#fl)" />
+      ))
+    }
+
+    {
+      boites.map((b) => {
+        const cx = b.x + L / 2;
+        return (
+          <>
+            <rect class:list={['boite', b.fort && 'boite--fort']} x={b.x} y="130" width={L} height="74" rx="4" />
+            <text class="t-titre" x={cx} y="163" text-anchor="middle">
+              {b.titre}
+            </text>
+            <text class:list={['t-sous', b.fort && 't-sous--accent']} x={cx} y="182" text-anchor="middle">
+              {b.sous}
+            </text>
+            {b.details.map((d, i) => (
+              <text class="t-detail" x={cx} y={232 + i * 18} text-anchor="middle">
+                {d}
+              </text>
+            ))}
+          </>
+        );
+      })
+    }
+
+    <line class="filet" x1="0" y1="306" x2="1056" y2="306" />
+    <text class="t-note" x="0" y="326">
+      Sur toute la chaîne : isolation tenant / client / établissement — 17 policies, vérifiées par la
+      suite de tests d’architecture
+    </text>
+  </svg>
+</div>
+
+<style>
+  .boite {
+    fill: var(--surface);
+    stroke: var(--line-3);
+    stroke-width: 1;
+  }
+
+  .boite--fort {
+    stroke: var(--accent-line);
+  }
+
+  .t-titre {
+    font-family: var(--font-display, sans-serif);
+    font-size: 14px;
+    fill: var(--text-strong);
+  }
+
+  .t-sous {
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    fill: var(--muted-2);
+  }
+
+  .t-sous--accent {
+    fill: var(--accent);
+  }
+
+  .t-detail {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    fill: var(--dim);
+  }
+
+  .t-branche {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    fill: var(--amber);
+  }
+
+  .t-note {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    fill: var(--muted-2);
+  }
+
+  .fleche {
+    stroke: var(--dim);
+    stroke-width: 1.2;
+  }
+
+  .branche {
+    fill: none;
+    stroke: var(--amber-line);
+    stroke-width: 1.2;
+    stroke-dasharray: 5 4;
+  }
+
+  .filet {
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
+  .tete {
+    fill: var(--dim);
+  }
+
+  .tete--ambre {
+    fill: var(--amber);
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+import { site } from '../data/site';
+
+const lignes: { cle: string; valeur: string; fort?: boolean }[] = [
+  { cle: 'poste', valeur: 'Admin Systèmes & Cloud / Développeur', fort: true },
+  { cle: 'employeur', valeur: 'SA TARATASY — depuis 2021', fort: true },
+  { cle: 'diplôme', valeur: 'Master II — Administration & Sécurité Réseau', fort: true },
+  { cle: 'cloud', valeur: 'Microsoft Azure · OVH · OpenNebula' },
+  { cle: 'systèmes', valeur: 'AlmaLinux · Debian · Windows Server' },
+  { cle: 'observabilité', valeur: 'Grafana · Prometheus · Loki · Alertmanager' },
+  { cle: 'ci/cd', valeur: 'GitLab CI/CD · Docker' },
+  { cle: 'durcissement', valeur: 'CSF · Imunify360 · ModSecurity · AIDE' },
+  { cle: 'code', valeur: 'PHP 8.2/8.3 · Laravel 11–13 · Vue 3 · Python' },
+];
+
+const coupure = 3;
+---
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="mono">~/profil</span>
+    <b>{site.nom}</b>
+  </div>
+  <dl class="panel__body">
+    {
+      lignes.map((ligne, i) => (
+        <>
+          {i === coupure && <div class="panel__sep" aria-hidden="true"></div>}
+          <div class:list={['panel__row', ligne.fort && 'panel__row--fort']}>
+            <dt>{ligne.cle}</dt>
+            <dd>{ligne.valeur}</dd>
+          </div>
+        </>
+      ))
+    }
+  </dl>
+</div>

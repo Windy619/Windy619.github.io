@@ -1,0 +1,59 @@
+[
+  {
+    "id": "sa-taratasy",
+    "ordre": 1,
+    "poste": "Administrateur Systèmes & Cloud / Développeur",
+    "employeur": "SA TARATASY",
+    "lieu": "Antananarivo",
+    "periode": "Depuis 2021",
+    "points": [
+      "Administrer l’infrastructure Microsoft Azure ainsi que les environnements serveurs Linux (AlmaLinux) et Windows.",
+      "Superviser les serveurs dédiés OVH (Grafana, Prometheus, Loki, Alertmanager) et analyser les journaux système et applicatifs pour diagnostiquer et résoudre les incidents.",
+      "Déployer et administrer des applications et sites conteneurisés avec Docker.",
+      "Concevoir et maintenir des pipelines GitLab CI/CD pour automatiser les déploiements.",
+      "Renforcer la sécurité des serveurs AlmaLinux (CSF, Imunify360) et des applications web via des règles ModSecurity personnalisées.",
+      "Définir les politiques de contrôle de sécurité des sites hébergés et rédiger les rapports d’incident : causes, impact, actions correctives, recommandations.",
+      "Développer et maintenir des applications PHP/Laravel, du diagnostic à la mise en production ; diagnostiquer et maintenir des sites Joomla et WordPress.",
+      "Projets menés dans ce poste : Documenthom OCR (DOXO), Prospection SMAC et Extranet Client SMAC."
+    ],
+    "chips": [
+      "Azure",
+      "AlmaLinux",
+      "Windows Server",
+      "OVH",
+      "Grafana/Prometheus/Loki",
+      "Docker",
+      "GitLab CI/CD",
+      "CSF",
+      "Imunify360",
+      "ModSecurity",
+      "Laravel"
+    ],
+    "resume": "Infrastructure Azure, serveurs AlmaLinux et Windows, supervision des dédiés OVH, pipelines GitLab CI/CD, durcissement et applications Laravel."
+  },
+  {
+    "id": "madawatt",
+    "ordre": 2,
+    "poste": "Administrateur Systèmes & Réseaux",
+    "employeur": "Madawatt / Agence AD HOC Concept",
+    "lieu": "Stage de fin d’études — Master",
+    "periode": "Juil. 2017 – Juil. 2019",
+    "mention": "Mémoire : implémentation de la sécurité d’accès d’un cloud open source basé sur OpenNebula avec SSH.",
+    "points": [
+      "Concevoir, déployer et exploiter l’infrastructure cloud de l’entreprise.",
+      "Installer un cloud open source basé sur OpenNebula et sécuriser les accès par SSH.",
+      "Mettre en place les services de fichiers et d’impression sous Debian avec Samba et CUPS.",
+      "Administrer et superviser les serveurs et postes clients avec Nagios et Centreon.",
+      "Assurer la maintenance des postes Windows/Linux et l’administration des sites web de l’entreprise."
+    ],
+    "chips": [
+      "OpenNebula",
+      "Debian",
+      "Samba/CUPS",
+      "Nagios",
+      "Centreon",
+      "SSH"
+    ],
+    "resume": "Installation d’un cloud open source OpenNebula sécurisé par SSH, services de fichiers et d’impression Samba/CUPS, supervision Nagios et Centreon."
+  }
+]

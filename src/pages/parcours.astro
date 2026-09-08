@@ -1,0 +1,154 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SectionHead from '../components/SectionHead.astro';
+
+const parOrdre = (a: any, b: any) => a.data.ordre - b.data.ordre;
+
+const experiences = (await getCollection('experiences')).sort(parOrdre);
+const formations = (await getCollection('formations')).sort(parOrdre);
+const annexes = (await getCollection('annexes')).sort(parOrdre);
+
+const langues = [
+  { langue: 'Malgache', niveau: 'langue maternelle' },
+  { langue: 'Français', niveau: 'lu, écrit et parlé' },
+  { langue: 'Anglais', niveau: 'niveau technique' },
+];
+
+const interets =
+  'Veille et technologies open source, photographie, VTT et escalade, voyages et découverte culturelle.';
+---
+
+<Layout
+  titre="Parcours"
+  description="Sept ans d’administration systèmes, réseaux et cloud : SA TARATASY depuis 2021, Madawatt / AD HOC Concept, Master II en Administration et Sécurité Réseau."
+>
+  <div class="wrap page-head">
+    <div class="flow-22">
+      <p class="eyebrow">Parcours</p>
+      <h1>Sept ans à tenir des infrastructures, et à apprendre le code qui tourne dessus.</h1>
+    </div>
+    <p class="page-head__intro">
+      Parti de la maintenance et du réseau, passé par un Master II consacré à la sécurité d’un cloud
+      open source, puis arrivé au point où l’infrastructure et l’application se pilotent ensemble.
+    </p>
+  </div>
+
+  <section class="wrap section" aria-labelledby="t-experience">
+    <SectionHead etiquette="Expérience professionnelle" id="t-experience" />
+    <div class="stack">
+      {
+        experiences.map((exp, i) => (
+          <article class="poste">
+            <div class="poste__aside">
+              <p class:list={['poste__periode', i > 0 && 'poste__periode--passe']}>
+                {exp.data.periode}
+              </p>
+              <p class="poste__employeur">{exp.data.employeur}</p>
+              <p class="poste__lieu">{exp.data.lieu}</p>
+            </div>
+
+            <div class="flow-22">
+              <h3>{exp.data.poste}</h3>
+              {exp.data.mention && <p class="poste__mention">{exp.data.mention}</p>}
+              <ul class="tirets">
+                {exp.data.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+              <div class="chips">
+                {exp.data.chips.map((chip) => (
+                  <span class="chip">{chip}</span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="t-formation">
+    <SectionHead etiquette="Formation" id="t-formation" />
+    <div class="stack">
+      {
+        formations.map((f, i) => (
+          <article class="chrono-row">
+            <p class:list={['chrono-row__date', i === 0 && 'chrono-row__date--actif']}>
+              {f.data.periode}
+            </p>
+            <div>
+              <h4>
+                {f.data.intitule}
+                {f.data.niveau && <small> ({f.data.niveau})</small>}
+              </h4>
+              {f.data.detail && <p>{f.data.detail}</p>}
+            </div>
+            <p class="chrono-row__lieu">{f.data.etablissement}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="t-annexes">
+    <SectionHead etiquette="Expériences complémentaires et stages" id="t-annexes" />
+    <div class="grid-2">
+      {
+        annexes.map((a) => (
+          <article class="card">
+            <p class="meta">
+              {a.data.periode} · {a.data.employeur}
+            </p>
+            <h4 style="margin-block-start: 10px; font-size: 1rem; font-weight: 500">
+              {a.data.poste}
+            </h4>
+            <p style="margin-block-start: 10px; font-size: 13px; line-height: 1.55; color: var(--muted)">
+              {a.data.detail}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="grid-2">
+      <div>
+        <p class="eyebrow">Langues</p>
+        <div class="coord" style="margin-block-start: 20px">
+          {
+            langues.map((l) => (
+              <div
+                class="coord__item"
+                style="flex-direction: row; align-items: baseline; justify-content: space-between; gap: 24px"
+              >
+                <span style="font-size: 15px; color: var(--text-strong)">{l.langue}</span>
+                <span class="coord__note">{l.niveau}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div>
+        <p class="eyebrow">Hors écran</p>
+        <p style="margin-block-start: 20px; font-size: 15px; line-height: 1.7; color: var(--muted)">
+          {interets}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="cta">
+      <div>
+        <h2>Le CV complet, au format PDF</h2>
+        <p>Version détaillée, à jour, prête à transmettre.</p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--primary" href="/cv/CV_JOHANESA_Windy_Olive.pdf">Télécharger le CV</a>
+      </div>
+    </div>
+  </section>
+</Layout>

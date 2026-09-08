@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Icon from '../components/Icon.astro';
+
+const parOrdre = (a: any, b: any) => a.data.ordre - b.data.ordre;
+const poles = (await getCollection('poles')).sort(parOrdre);
+const outils = (await getCollection('outils')).sort(parOrdre);
+---
+
+<Layout
+  titre="Expertise"
+  description="Huit pôles d’expertise — systèmes et réseaux, cloud et DevOps, SRE, DevSecOps, sécurité et conformité, intégration IA, automatisation, développement — et le terrain où chacun a été pratiqué."
+>
+  <div class="wrap page-head">
+    <div class="flow-22">
+      <p class="eyebrow">Expertise</p>
+      <h1>Huit pôles, huit terrains où je les ai réellement pratiqués.</h1>
+    </div>
+    <p class="page-head__intro">
+      Chaque pôle est adossé à une mission ou un projet identifiable : SA TARATASY depuis 2021, les
+      projets clients SMAC, la plateforme DOXO, mon projet personnel DevWatch, et l’infrastructure
+      cloud construite chez Madawatt.
+    </p>
+  </div>
+
+  <section class="wrap section">
+    <div class="stack">
+      {
+        poles.map((pole) => (
+          <article class="pole-row" id={pole.id}>
+            <div class="flow-16">
+              <div style="display: flex; align-items: center; gap: 12px">
+                <span class="pole__icone">
+                  <Icon name={pole.data.icone} size={22} />
+                </span>
+                <span class="meta">{String(pole.data.ordre).padStart(2, '0')}</span>
+              </div>
+              <h3>{pole.data.titre}</h3>
+              <p class="pole-row__accroche">{pole.data.accroche}</p>
+            </div>
+
+            <ul class="tirets">
+              {pole.data.points.map((point) => <li>{point}</li>)}
+            </ul>
+
+            <div class="pole-row__terrain">
+              <h4>Sur le terrain</h4>
+              <p>{pole.data.terrain}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="t-outils">
+    <SectionHead etiquette="Boîte à outils" id="t-outils" />
+    <div class="grid-3">
+      {
+        outils.map((groupe) => (
+          <div class="card">
+            <h4 style="font-size: 14px; font-weight: 500">{groupe.data.titre}</h4>
+            <p class="mono" style="margin-block-start: 14px; font-size: 12px; line-height: 1.75; color: var(--muted)">
+              {groupe.data.items.join(' · ')}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="cta">
+      <div>
+        <h2>Un de ces pôles correspond à votre besoin ?</h2>
+        <p>Les projets montrent comment ils se combinent en production.</p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--primary" href="/projets/">Voir les projets</a>
+      </div>
+    </div>
+  </section>
+</Layout>

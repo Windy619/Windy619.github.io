@@ -1,0 +1,200 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const interventions = [
+  {
+    icone: 'server',
+    titre: 'Reprise et durcissement d’une infrastructure',
+    texte:
+      'Serveurs Linux ou Windows existants à documenter, sécuriser et remettre sous contrôle — y compris de l’hébergement mutualisé.',
+  },
+  {
+    icone: 'pulse',
+    titre: 'Mise en place de la supervision',
+    texte:
+      'Métriques, logs et alerting sur une stack Prometheus / Grafana / Loki, avec les procédures d’incident qui vont avec.',
+  },
+  {
+    icone: 'cycle',
+    titre: 'Automatisation des déploiements',
+    texte:
+      'Conteneurisation Docker et pipelines GitLab CI/CD pour une application Laravel ou PHP existante, jusqu’à la mise en production.',
+  },
+];
+---
+
+<Layout
+  titre="Contact"
+  description="Administrateur systèmes, réseaux et cloud basé à Antananarivo. Reprise d’infrastructure, supervision, automatisation des déploiements."
+>
+  <div class="wrap page-head">
+    <div class="flow-22">
+      <p class="eyebrow">Contact</p>
+      <h1>Dites-moi ce qui doit tourner, et ce qui ne tourne pas encore.</h1>
+    </div>
+    <p class="page-head__intro">
+      Basé à {site.ville}. Un message décrivant le contexte technique de votre besoin suffit pour
+      démarrer la discussion.
+    </p>
+  </div>
+
+  <div class="wrap contact">
+    <div>
+      <div class="coord">
+        <div class="coord__item">
+          <span class="coord__label">E-mail</span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+
+        {
+          site.telephones.length > 0 && (
+            <div class="coord__item">
+              <span class="coord__label">Téléphone</span>
+              {site.telephones.map((tel) => (
+                <a href={`tel:${tel.replace(/\s/g, '')}`} style="color: var(--text-strong)">
+                  {tel}
+                </a>
+              ))}
+            </div>
+          )
+        }
+
+        <div class="coord__item">
+          <span class="coord__label">Localisation</span>
+          <span class="coord__valeur">{site.ville}</span>
+          <span class="coord__note">
+            Fuseau {site.fuseau}{site.modalites ? ` — ${site.modalites}` : ''}
+          </span>
+        </div>
+
+        <div class="coord__item">
+          <span class="coord__label">GitHub</span>
+          <a href={site.github.url} rel="me noopener">{site.github.label}</a>
+        </div>
+
+        <div class="coord__item">
+          <span class="coord__label">LinkedIn</span>
+          <a href={site.linkedin.url} rel="me noopener">{site.linkedin.label}</a>
+        </div>
+      </div>
+
+      <a
+        class="card card--calme card--lien"
+        href={site.cv}
+        style="display: flex; align-items: center; gap: 14px; margin-block-start: 32px"
+      >
+        <span style="flex-shrink: 0; color: var(--accent)">
+          <Icon name="document" size={20} />
+        </span>
+        <span>
+          <span class="mono" style="display: block; font-size: 13px; color: var(--text-strong)">
+            CV complet — PDF
+          </span>
+          <span class="mono" style="display: block; margin-block-start: 3px; font-size: 11px; color: var(--muted-2)">
+            Version détaillée, à jour
+          </span>
+        </span>
+      </a>
+    </div>
+
+    {
+      site.formulaireEndpoint ? (
+        <form class="card flow-28" method="post" action={site.formulaireEndpoint}>
+          <h2 style="font-size: 1.5rem; font-weight: 700">Décrivez votre besoin</h2>
+
+          <div class="grid-2" style="gap: 20px">
+            <label class="champ">
+              <span>Nom</span>
+              <input type="text" name="nom" placeholder="Votre nom" required autocomplete="name" />
+            </label>
+
+            <label class="champ">
+              <span>E-mail</span>
+              <input
+                type="email"
+                name="email"
+                placeholder="vous@entreprise.com"
+                required
+                autocomplete="email"
+              />
+            </label>
+
+            <label class="champ">
+              <span>Société</span>
+              <input type="text" name="societe" placeholder="Optionnel" autocomplete="organization" />
+            </label>
+
+            <label class="champ">
+              <span>Type de mission</span>
+              <select name="mission">
+                <option>Infrastructure &amp; cloud</option>
+                <option>Supervision &amp; astreinte</option>
+                <option>Sécurité &amp; durcissement</option>
+                <option>Automatisation &amp; CI/CD</option>
+                <option>Développement Laravel</option>
+                <option>Autre</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="champ">
+            <span>Contexte technique</span>
+            <textarea
+              name="message"
+              required
+              placeholder="Systèmes en place, volumétrie, ce qui pose problème aujourd’hui…"></textarea>
+          </label>
+
+          <div class="form__pied">
+            <p class="form__note">
+              {site.delaiReponse
+                ? `Réponse par e-mail sous ${site.delaiReponse}.`
+                : 'Réponse par e-mail.'}
+            </p>
+            <button class="btn btn--primary" type="submit">Envoyer</button>
+          </div>
+        </form>
+      ) : (
+        <div class="card flow-28">
+          <h2 style="font-size: 1.5rem; font-weight: 700">Écrivez-moi directement</h2>
+          <p style="font-size: 15px; line-height: 1.7; color: var(--muted)">
+            Le plus efficace reste un e-mail décrivant le contexte : systèmes en place, volumétrie, et
+            ce qui pose problème aujourd’hui. Je réponds avec une première lecture technique.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href={`mailto:${site.email}`}>{site.email}</a>
+            <a class="btn btn--ghost" href={site.linkedin.url} rel="me noopener">LinkedIn</a>
+          </div>
+          <p class="form__note">
+            Un formulaire remplacera ce bloc dès qu’un endpoint de réception sera branché
+            (<code>formulaireEndpoint</code> dans <code>src/data/site.ts</code>).
+          </p>
+        </div>
+      )
+    }
+  </div>
+
+  <section class="wrap section" aria-labelledby="t-interventions">
+    <SectionHead etiquette="Ce sur quoi j’interviens" id="t-interventions" />
+    <div class="grid-3">
+      {
+        interventions.map((item) => (
+          <div class="card card--calme">
+            <span style="display: flex; color: var(--accent)">
+              <Icon name={item.icone} size={22} />
+            </span>
+            <h3 style="margin-block-start: 12px; font-size: 1.0625rem; font-weight: 500">
+              {item.titre}
+            </h3>
+            <p style="margin-block-start: 12px; font-size: 13px; line-height: 1.6; color: var(--muted)">
+              {item.texte}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

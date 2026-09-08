@@ -1,0 +1,17 @@
+---
+/**
+ * Zone en attente d'une capture d'écran.
+ * Dès qu'une image est disponible, remplacez l'appel par <Image /> d'Astro.
+ */
+interface Props {
+  legende?: string;
+  large?: boolean;
+}
+
+const { legende, large = false } = Astro.props;
+---
+
+<div class:list={['placeholder', large && 'placeholder--large']}>
+  <b>[Capture d’écran à fournir]</b>
+  {legende && <span>{legende}</span>}
+</div>

@@ -1,0 +1,162 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import { categoriesProjet } from '../../data/site';
+
+const projets = (await getCollection('projets')).sort((a, b) => a.data.ordre - b.data.ordre);
+
+const libelleCat = (cat: string) =>
+  categoriesProjet.find((c) => c.id === cat)?.libelle ?? cat;
+
+/** Une catégorie n'est proposée en filtre que si un projet la porte. */
+const categoriesUtilisees = categoriesProjet.filter((cat) =>
+  projets.some((p) => p.data.categories.includes(cat.id as never))
+);
+---
+
+<Layout
+  titre="Projets"
+  description="Quatre plateformes : Documenthom OCR (DOXO), Prospection SMAC, Extranet Client SMAC et DevWatch. Pour chacune, le problème posé, la décision technique qui a compté et la pile réellement utilisée."
+>
+  <div class="wrap page-head">
+    <div class="flow-22">
+      <p class="eyebrow">Projets</p>
+      <h1>Ce que j’ai construit, et ce qui tourne encore.</h1>
+    </div>
+    <p class="page-head__intro">
+      Deux plateformes livrées au client SMAC, une plateforme produit chez SA TARATASY, une conçue en
+      solo. Pour chacune : le problème posé, la décision technique qui a compté, et la pile
+      réellement utilisée.
+    </p>
+  </div>
+
+  <div class="wrap" style="padding-block-end: 40px">
+    <div class="filtres" data-filtres role="group" aria-label="Filtrer les projets par domaine">
+      <button class="filtre" type="button" data-filtre="tout" aria-pressed="true">
+        Tout ({projets.length})
+      </button>
+      {
+        categoriesUtilisees.map((cat) => (
+          <button class="filtre" type="button" data-filtre={cat.id} aria-pressed="false">
+            {cat.libelle}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <section class="wrap section">
+    <div class="stack" style="gap: 24px">
+      {
+        projets.map((projet) => {
+          const d = projet.data;
+          const ambre = d.ton === 'ambre';
+          return (
+            <article
+              class:list={['card', 'projet-large', ambre && 'card--ambre']}
+              data-projet
+              data-categories={d.categories.join(' ')}
+            >
+              <div class="flow-16">
+                <div class="projet__meta">
+                  <span class:list={['badge', ambre ? 'badge--ambre' : 'badge--neutre']}>
+                    {d.statut}
+                  </span>
+                  <span class="meta">
+                    {d.contexte} · {d.role} · {d.periode}
+                  </span>
+                </div>
+
+                <h2 style="font-size: clamp(1.5rem, 3vw, 1.875rem); font-weight: 700">{d.titre}</h2>
+
+                <p style="font-size: 15px; line-height: 1.6; color: var(--text-2)">{d.sousTitre}</p>
+
+                {d.decisions.length > 0 && (
+                  <>
+                    <p class="meta">Décisions clés</p>
+                    <ul class:list={['tirets', 'tirets--serre', ambre && 'tirets--ambre']}>
+                      {d.decisions.slice(0, 3).map((dec) => (
+                        <li>{dec.titre}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+
+                <div class="chips">
+                  {d.categories.map((cat) => (
+                    <span class:list={['chip', ambre ? 'chip--cat-ambre' : 'chip--cat']}>
+                      {libelleCat(cat)}
+                    </span>
+                  ))}
+                  <span class="chips__sep" aria-hidden="true"></span>
+                  {d.stack.map((t) => (
+                    <span class="chip">{t}</span>
+                  ))}
+                </div>
+
+                <p>
+                  <a
+                    href={`/projets/${projet.id}/`}
+                    class="mono"
+                    style={`font-size: 12px; color: ${ambre ? 'var(--amber)' : 'var(--accent)'}`}
+                  >
+                    Lire l’étude de cas complète →
+                  </a>
+                </p>
+              </div>
+
+              <Placeholder legende={d.captureLegende} />
+            </article>
+          );
+        })
+      }
+    </div>
+
+    <p class="filtres__vide" data-vide hidden style="margin-block-start: 32px">
+      Aucun projet dans ce domaine pour l’instant.
+    </p>
+  </section>
+
+  <section class="wrap section">
+    <div class="cta">
+      <div>
+        <h2>Les réalisations plus anciennes</h2>
+        <p>
+          Site municipal, VoIP Asterisk, cloud privé OpenNebula : elles figurent dans le parcours.
+        </p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--ghost" href="/parcours/">Voir le parcours</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const barre = document.querySelector<HTMLElement>('[data-filtres]');
+
+  if (barre) {
+    const boutons = [...barre.querySelectorAll<HTMLButtonElement>('button[data-filtre]')];
+    const cartes = [...document.querySelectorAll<HTMLElement>('[data-projet]')];
+    const vide = document.querySelector<HTMLElement>('[data-vide]');
+
+    barre.addEventListener('click', (event) => {
+      const bouton = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-filtre]');
+      if (!bouton) return;
+
+      const filtre = bouton.dataset.filtre ?? 'tout';
+      boutons.forEach((b) => b.setAttribute('aria-pressed', String(b === bouton)));
+
+      let visibles = 0;
+      cartes.forEach((carte) => {
+        const categories = (carte.dataset.categories ?? '').split(' ');
+        const visible = filtre === 'tout' || categories.includes(filtre);
+        carte.hidden = !visible;
+        if (visible) visibles += 1;
+      });
+
+      if (vide) vide.hidden = visibles > 0;
+    });
+  }
+</script>

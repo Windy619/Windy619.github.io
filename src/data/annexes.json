@@ -1,0 +1,34 @@
+[
+  {
+    "id": "mairie-morondava",
+    "ordre": 1,
+    "periode": "Janv. – Mars 2016",
+    "employeur": "Mairie de Morondava",
+    "poste": "Consultant Développeur",
+    "detail": "Création du site web municipal, maintenance des postes et installation d’un serveur d’impression."
+  },
+  {
+    "id": "net-team",
+    "ordre": 2,
+    "periode": "Mars – Juin 2015",
+    "employeur": "NET TEAM Antsirabe",
+    "poste": "Développeur — stage de fin d’études (Licence)",
+    "detail": "VoIP sous Asterisk/Debian, application de gestion d’écolage et plateforme web Java/Oracle."
+  },
+  {
+    "id": "ong-mahefa",
+    "ordre": 3,
+    "periode": "Avril – Mai 2014",
+    "employeur": "ONG MAHEFA",
+    "poste": "Consultant",
+    "detail": "Traitement de dossiers clients avec Sage X et Excel."
+  },
+  {
+    "id": "jirama",
+    "ordre": 4,
+    "periode": "Oct. – Déc. 2013",
+    "employeur": "JIRAMA Morondava",
+    "poste": "Technicien maintenance & réseau — stage",
+    "detail": "Assistance utilisateurs, maintenance matérielle, installation Windows et manipulation de bases Oracle."
+  }
+]

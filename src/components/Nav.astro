@@ -1,0 +1,47 @@
+---
+import { site, nav } from '../data/site';
+import Icon from './Icon.astro';
+
+const chemin = Astro.url.pathname;
+const actif = (href: string) =>
+  href === '/' ? chemin === '/' : chemin === href || chemin.startsWith(href);
+---
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="/">
+      {site.marque.racine}<span>{site.marque.suffixe}</span>
+    </a>
+
+    <nav class="nav__desktop" aria-label="Navigation principale">
+      {
+        nav.map((item) => (
+          <a
+            class="nav__link"
+            href={item.href}
+            aria-current={actif(item.href) ? 'page' : undefined}
+          >
+            {item.libelle}
+          </a>
+        ))
+      }
+      <a class="nav__cta" href={site.cv}>CV — PDF</a>
+    </nav>
+
+    <details class="nav__mobile">
+      <summary class="nav__burger" aria-label="Ouvrir le menu">
+        <Icon name="menu" size={22} />
+      </summary>
+      <nav class="nav__panel" aria-label="Navigation principale">
+        {
+          nav.map((item) => (
+            <a href={item.href} aria-current={actif(item.href) ? 'page' : undefined}>
+              {item.libelle}
+            </a>
+          ))
+        }
+        <a href={site.cv}>CV — PDF</a>
+      </nav>
+    </details>
+  </div>
+</header>

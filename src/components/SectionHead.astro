@@ -1,0 +1,30 @@
+---
+interface Props {
+  numero?: string;
+  etiquette: string;
+  titre?: string;
+  lien?: { libelle: string; href: string };
+  id?: string;
+}
+
+const { numero, etiquette, titre, lien, id } = Astro.props;
+const surtitre = numero ? `${numero} — ${etiquette}` : etiquette;
+---
+
+<div class="section__head">
+  <p class="eyebrow" id={id}>{surtitre}</p>
+  <div class="rule"></div>
+</div>
+
+{
+  titre && (
+    <div class="section__title">
+      <h2>{titre}</h2>
+      {lien && (
+        <a class="section__link" href={lien.href}>
+          {lien.libelle} →
+        </a>
+      )}
+    </div>
+  )
+}

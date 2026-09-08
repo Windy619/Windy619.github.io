@@ -1,0 +1,10 @@
+# Normalisation des fins de ligne : LF dans le depot, quelle que soit la machine.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.svg text eol=lf
+*.woff2 binary
+*.pdf binary

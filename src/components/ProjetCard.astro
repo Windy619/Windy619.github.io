@@ -1,0 +1,67 @@
+---
+import { categoriesProjet } from '../data/site';
+
+interface Props {
+  id: string;
+  data: {
+    titre: string;
+    sousTitre: string;
+    statut: string;
+    ton: 'accent' | 'neutre' | 'ambre';
+    contexte: string;
+    periode: string;
+    categories: string[];
+    stack: string[];
+    kpis: { valeur: string; label: string }[];
+  };
+  /** Nombre de technologies affichées sur la carte. */
+  maxStack?: number;
+}
+
+const { id, data, maxStack = 5 } = Astro.props;
+const ambre = data.ton === 'ambre';
+
+const libelleCat = (cat: string) =>
+  categoriesProjet.find((c) => c.id === cat)?.libelle ?? cat;
+---
+
+<a
+  class:list={['card', 'projet', 'card--lien', ambre && 'card--ambre', ambre && 'projet--ambre']}
+  href={`/projets/${id}/`}
+  data-categories={data.categories.join(' ')}
+>
+  <div class="projet__meta">
+    <span class:list={['badge', ambre ? 'badge--ambre' : 'badge--neutre']}>{data.statut}</span>
+    <span class="meta">{data.contexte} · {data.periode}</span>
+  </div>
+
+  <h3>{data.titre}</h3>
+  <p class="projet__resume">{data.sousTitre}</p>
+
+  {
+    data.kpis.length > 0 && (
+      <dl class="kpis">
+        {data.kpis.slice(0, 3).map((k) => (
+          <div class="kpi">
+            <dt>{k.valeur}</dt>
+            <dd>{k.label}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+
+  <div class="chips">
+    {
+      data.categories.map((cat) => (
+        <span class:list={['chip', ambre ? 'chip--cat-ambre' : 'chip--cat']}>
+          {libelleCat(cat)}
+        </span>
+      ))
+    }
+    <span class="chips__sep" aria-hidden="true"></span>
+    {data.stack.slice(0, maxStack).map((t) => <span class="chip">{t}</span>)}
+  </div>
+
+  <span class="projet__suite">Lire l’étude de cas →</span>
+</a>

@@ -1,0 +1,126 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ProfilPanel from '../components/ProfilPanel.astro';
+import PoleCard from '../components/PoleCard.astro';
+import ProjetCard from '../components/ProjetCard.astro';
+import { site } from '../data/site';
+
+const parOrdre = (a: any, b: any) => a.data.ordre - b.data.ordre;
+
+const poles = (await getCollection('poles')).sort(parOrdre);
+const projets = (await getCollection('projets')).sort(parOrdre);
+const experiences = (await getCollection('experiences')).sort(parOrdre);
+const formations = (await getCollection('formations')).sort(parOrdre);
+
+const masterII = formations[0];
+---
+
+<Layout
+  titre="Administrateur Systèmes, Réseaux & Cloud"
+  description="Administrateur systèmes, réseaux et cloud — 7 ans d’expérience. Azure, AlmaLinux, Docker, GitLab CI/CD, supervision Prometheus/Grafana, durcissement et développement Laravel."
+>
+  <section class="wrap hero">
+    <div class="flow-28">
+      {site.disponibilite && <p class="dispo">{site.ville} — {site.disponibilite}</p>}
+      <h1>J’exploite, je sécurise et j’automatise les infrastructures qui portent vos applications.</h1>
+      <p class="hero__intro">
+        Administrateur systèmes, réseaux &amp; cloud — {site.experienceAnnees} ans d’expérience,
+        Master II en Administration et Sécurité Réseau. D’Azure et AlmaLinux aux pipelines GitLab
+        CI/CD, jusqu’au code Laravel qui tourne dessus.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/projets/">Voir les projets</a>
+        <a class="btn btn--ghost" href="/contact/">Me contacter</a>
+      </div>
+    </div>
+
+    <ProfilPanel />
+  </section>
+
+  <section class="wrap section" aria-labelledby="t-expertise">
+    <SectionHead
+      numero="01"
+      etiquette="Expertise"
+      id="t-expertise"
+      titre="Huit pôles, une même chaîne : de la machine au code en production."
+      lien={{ libelle: 'Détail des pôles', href: '/expertise/' }}
+    />
+    <div class="grid-poles">
+      {
+        poles.map((pole) => (
+          <PoleCard
+            titre={pole.data.titre}
+            icone={pole.data.icone}
+            resume={pole.data.resume}
+            chips={pole.data.chips}
+            href={`/expertise/#${pole.id}`}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="t-projets">
+    <SectionHead
+      numero="02"
+      etiquette="Projets"
+      id="t-projets"
+      titre="Quatre plateformes, conçues, sécurisées et suivies dans le temps."
+      lien={{ libelle: 'Tous les projets', href: '/projets/' }}
+    />
+    <div class="grid-projets">
+      {projets.map((projet) => <ProjetCard id={projet.id} data={projet.data} />)}
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="t-parcours">
+    <SectionHead numero="03" etiquette="Parcours" id="t-parcours" />
+    <div class="stack">
+      {
+        experiences.map((exp, i) => (
+          <article class="chrono-row">
+            <p class:list={['chrono-row__date', i === 0 && 'chrono-row__date--actif']}>
+              {exp.data.periode}
+            </p>
+            <div>
+              <h4>{exp.data.poste}</h4>
+              <p>{exp.data.resume}</p>
+            </div>
+            <p class="chrono-row__lieu">{exp.data.employeur}</p>
+          </article>
+        ))
+      }
+      <article class="chrono-row">
+        <p class="chrono-row__date">{masterII.data.periode}</p>
+        <div>
+          <h4>
+            {masterII.data.intitule}
+            {masterII.data.niveau && <small> ({masterII.data.niveau})</small>}
+          </h4>
+          {masterII.data.detail && <p>{masterII.data.detail}</p>}
+        </div>
+        <p class="chrono-row__lieu">{masterII.data.etablissement}</p>
+      </article>
+    </div>
+    <p style="margin-block-start: 28px">
+      <a class="section__link" href="/parcours/">Parcours complet et formation →</a>
+    </p>
+  </section>
+
+  <section class="wrap section">
+    <div class="cta">
+      <div>
+        <h2>Une infrastructure à reprendre, superviser ou automatiser ?</h2>
+        <p>
+          Écrivez-moi{site.delaiReponse ? ` — je réponds sous ${site.delaiReponse}.` : '.'}
+        </p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--primary" href={`mailto:${site.email}`}>{site.email}</a>
+        <a class="coord__note" href={site.linkedin.url} rel="me noopener">ou sur LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</Layout>

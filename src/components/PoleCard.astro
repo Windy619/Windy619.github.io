@@ -1,0 +1,23 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  titre: string;
+  icone: string;
+  resume: string;
+  chips: string[];
+  href?: string;
+}
+
+const { titre, icone, resume, chips, href } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class:list={['card', 'pole', href && 'card--lien']} href={href}>
+  <span class="pole__icone"><Icon name={icone} size={22} /></span>
+  <h3>{titre}</h3>
+  <p>{resume}</p>
+  <div class="chips">
+    {chips.map((c) => <span class="chip">{c}</span>)}
+  </div>
+</Tag>

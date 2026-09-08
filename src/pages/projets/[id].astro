@@ -1,0 +1,239 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import PipelineDoxo from '../../components/PipelineDoxo.astro';
+import Icon from '../../components/Icon.astro';
+import { categoriesProjet } from '../../data/site';
+
+export async function getStaticPaths() {
+  const projets = (await getCollection('projets')).sort((a, b) => a.data.ordre - b.data.ordre);
+
+  return projets.map((projet, i) => ({
+    params: { id: projet.id },
+    props: {
+      projet,
+      precedent: projets[i - 1] ?? null,
+      suivant: projets[i + 1] ?? null,
+    },
+  }));
+}
+
+const { projet, precedent, suivant } = Astro.props;
+const { Content } = await render(projet);
+
+const d = projet.data;
+const ambre = d.ton === 'ambre';
+const corps = (projet.body ?? '').trim();
+
+const libelleCat = (cat: string) =>
+  categoriesProjet.find((c) => c.id === cat)?.libelle ?? cat;
+
+const fiche: { cle: string; valeur: string }[] = [
+  { cle: 'rôle', valeur: d.role },
+  { cle: 'contexte', valeur: d.contexte },
+  { cle: 'période', valeur: d.periode },
+  { cle: 'domaines', valeur: d.categories.map(libelleCat).join(' · ') },
+];
+---
+
+<Layout titre={d.titre} description={d.sousTitre}>
+  <nav class="wrap" aria-label="Fil d’Ariane" style="padding-block-start: 28px">
+    <p class="mono" style="font-size: 11px; color: var(--muted)">
+      <a href="/projets/">Projets</a>
+      <span style="color: var(--dim-2)"> / </span>
+      {d.titre}
+    </p>
+  </nav>
+
+  <div class="wrap page-head">
+    <div class="flow-22">
+      <div class="projet__meta">
+        <span class:list={['badge', ambre ? 'badge--ambre' : 'badge--accent']}>{d.statut}</span>
+        <span class="meta">{d.periode}</span>
+      </div>
+      <h1>{d.titre}</h1>
+      <p style="font-size: clamp(0.9375rem, 1.5vw, 1.0625rem); line-height: 1.6; color: var(--text-2)">
+        {d.sousTitre}
+      </p>
+    </div>
+
+    <div class="card card--calme">
+      <dl class="stack" style="gap: 16px">
+        {
+          fiche.map((ligne) => (
+            <div class="panel__row panel__row--fort">
+              <dt>{ligne.cle}</dt>
+              <dd>{ligne.valeur}</dd>
+            </div>
+          ))
+        }
+        <div class="panel__sep" aria-hidden="true"></div>
+        <div class="panel__row">
+          <dt>pile</dt>
+          <dd>{d.stack.join(' · ')}</dd>
+        </div>
+        {
+          d.services.length > 0 && (
+            <div class="panel__row">
+              <dt>services</dt>
+              <dd>{d.services.join(' · ')}</dd>
+            </div>
+          )
+        }
+      </dl>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding-block-end: var(--sec-y)">
+    <Placeholder legende={d.captureLegende} large />
+
+    {
+      d.kpis.length > 0 && (
+        <div class="grid-3" style="margin-block-start: 44px">
+          {d.kpis.map((k) => (
+            <div class="card">
+              <p class="mono" style="font-size: 1.625rem; color: var(--text-strong)">{k.valeur}</p>
+              <p class="meta" style="margin-block-start: 8px">{k.label}</p>
+              {k.note && (
+                <p style="margin-block-start: 8px; font-size: 12px; line-height: 1.5; color: var(--dim)">
+                  {k.note}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <section class="wrap section" aria-labelledby="t-probleme">
+    <SectionHead etiquette="Le problème" id="t-probleme" />
+    <div class="grid-2">
+      <p style="font-size: clamp(1rem, 1.8vw, 1.1875rem); line-height: 1.55; color: var(--text)">
+        {d.probleme.accroche}
+      </p>
+      <p style="font-size: 15px; line-height: 1.7; color: var(--muted)">{d.probleme.detail}</p>
+    </div>
+  </section>
+
+  {
+    d.schema === 'doxo-pipeline' && (
+      <section class="wrap section" aria-labelledby="t-pipeline">
+        <SectionHead etiquette="Le pipeline" id="t-pipeline" />
+        <PipelineDoxo />
+      </section>
+    )
+  }
+
+  {
+    d.decisions.length > 0 && (
+      <section class="wrap section" aria-labelledby="t-decisions">
+        <SectionHead etiquette="Décisions techniques" id="t-decisions" />
+        <div class="grid-2">
+          {d.decisions.map((dec, i) => (
+            <article class="card">
+              <p class="meta">{String(i + 1).padStart(2, '0')}</p>
+              <h3 style="margin-block-start: 12px; font-size: 1.25rem; font-weight: 500">
+                {dec.titre}
+              </h3>
+              <p style="margin-block-start: 12px; font-size: 14px; line-height: 1.6; color: var(--muted)">
+                {dec.texte}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    d.securite.length > 0 && (
+      <section class="wrap section" aria-labelledby="t-securite">
+        <SectionHead etiquette="Sécurité & conformité" id="t-securite" />
+        <div class="grid-2">
+          {d.securite.map((item) => (
+            <div style="display: flex; gap: 16px; padding-block-end: 20px; border-block-end: 1px solid var(--line)">
+              <span style={`flex-shrink: 0; margin-block-start: 2px; color: ${ambre ? 'var(--amber)' : 'var(--accent)'}`}>
+                <Icon name={item.icone} size={20} />
+              </span>
+              <div>
+                <h3 style="font-size: 15px; font-weight: 500">{item.titre}</h3>
+                <p style="margin-block-start: 5px; font-size: 13px; line-height: 1.55; color: var(--muted)">
+                  {item.texte}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    corps && (
+      <section class="wrap section">
+        <div class="prose">
+          <Content />
+        </div>
+      </section>
+    )
+  }
+
+  <nav class="wrap section" aria-label="Autres projets">
+    <div class="grid-2">
+      {
+        precedent ? (
+          <a class="card card--calme card--lien" href={`/projets/${precedent.id}/`}>
+            <p class="meta">← Projet précédent</p>
+            <h3 style="margin-block-start: 10px; font-size: 1.375rem; font-weight: 500">
+              {precedent.data.titre}
+            </h3>
+            <p style="margin-block-start: 10px; font-size: 13px; color: var(--muted)">
+              {precedent.data.contexte}
+            </p>
+          </a>
+        ) : (
+          <a class="card card--calme card--lien" href="/projets/">
+            <p class="meta">← Retour</p>
+            <h3 style="margin-block-start: 10px; font-size: 1.375rem; font-weight: 500">
+              Tous les projets
+            </h3>
+            <p style="margin-block-start: 10px; font-size: 13px; color: var(--muted)">
+              Les quatre plateformes, filtrables par domaine
+            </p>
+          </a>
+        )
+      }
+
+      {
+        suivant ? (
+          <a
+            class="card card--calme card--lien"
+            href={`/projets/${suivant.id}/`}
+            style="text-align: end"
+          >
+            <p class="meta">Projet suivant →</p>
+            <h3 style="margin-block-start: 10px; font-size: 1.375rem; font-weight: 500">
+              {suivant.data.titre}
+            </h3>
+            <p style="margin-block-start: 10px; font-size: 13px; color: var(--muted)">
+              {suivant.data.contexte}
+            </p>
+          </a>
+        ) : (
+          <a class="card card--calme card--lien" href="/contact/" style="text-align: end">
+            <p class="meta">Suite →</p>
+            <h3 style="margin-block-start: 10px; font-size: 1.375rem; font-weight: 500">
+              Me contacter
+            </h3>
+            <p style="margin-block-start: 10px; font-size: 13px; color: var(--muted)">
+              Décrire un besoin d’infrastructure ou de supervision
+            </p>
+          </a>
+        )
+      }
+    </div>
+  </nav>
+</Layout>

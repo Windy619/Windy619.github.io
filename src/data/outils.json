@@ -1,0 +1,101 @@
+[
+  {
+    "id": "systemes-serveurs",
+    "ordre": 1,
+    "titre": "Systèmes & serveurs",
+    "items": [
+      "Debian",
+      "Ubuntu",
+      "Red Hat/CentOS",
+      "AlmaLinux",
+      "Windows Server",
+      "Active Directory",
+      "Hyper-V",
+      "Samba",
+      "CUPS"
+    ]
+  },
+  {
+    "id": "cloud-devops",
+    "ordre": 2,
+    "titre": "Cloud, virtualisation & DevOps",
+    "items": [
+      "Microsoft Azure",
+      "OVH",
+      "Docker",
+      "GitLab CI/CD",
+      "VMware",
+      "vCenter",
+      "vSphere",
+      "OpenNebula"
+    ]
+  },
+  {
+    "id": "reseaux-securite",
+    "ordre": 3,
+    "titre": "Réseaux & sécurité",
+    "items": [
+      "TCP/IP",
+      "Routage",
+      "VLAN",
+      "Spanning Tree",
+      "VPN",
+      "DNS",
+      "DHCP",
+      "SMTP",
+      "pfSense",
+      "F5 BIG-IP",
+      "OpenLDAP",
+      "AIDE"
+    ]
+  },
+  {
+    "id": "supervision-parc",
+    "ordre": 4,
+    "titre": "Supervision & gestion de parc",
+    "items": [
+      "Grafana",
+      "Prometheus",
+      "Loki",
+      "Alertmanager",
+      "Nagios",
+      "Centreon",
+      "GLPI",
+      "OCS Inventory"
+    ]
+  },
+  {
+    "id": "developpement",
+    "ordre": 5,
+    "titre": "Développement",
+    "items": [
+      "PHP",
+      "Laravel",
+      "JavaScript",
+      "TypeScript",
+      "Vue 3",
+      "HTML/CSS",
+      "Python",
+      "Node.js",
+      "Java",
+      "C#",
+      "Joomla",
+      "WordPress",
+      "Drupal"
+    ]
+  },
+  {
+    "id": "bases-de-donnees",
+    "ordre": 6,
+    "titre": "Bases de données",
+    "items": [
+      "MySQL",
+      "PostgreSQL",
+      "SQL Server",
+      "Oracle",
+      "Access",
+      "Redis",
+      "Modélisation UML"
+    ]
+  }
+]
