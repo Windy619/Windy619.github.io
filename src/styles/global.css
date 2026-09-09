@@ -9,6 +9,13 @@
 
   /* Fonds et surfaces */
   --bg: #0b0f14;
+  --bg-texture: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgb(255 255 255 / 0.012) 3px,
+    rgb(255 255 255 / 0.012) 4px
+  );
   --surface: #111823;
   --surface-2: #0f151e;
   --surface-3: #0d131b;
@@ -53,6 +60,17 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 oklch(0.76 0.13 160 / 0.5);
+  }
+  60% {
+    opacity: 0.85;
+    box-shadow: 0 0 0 5px oklch(0.76 0.13 160 / 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -67,7 +85,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--bg-texture), var(--bg);
   color: var(--text);
   font-family: var(--font-body, system-ui, sans-serif);
   font-size: 16px;
@@ -478,9 +496,10 @@ a:hover {
 }
 
 .card--lien:hover {
-  border-color: var(--line-3);
+  border-color: var(--accent-line);
   background: var(--surface-3);
   color: inherit;
+  box-shadow: 0 0 0 1px var(--accent-line), 0 8px 28px rgb(0 0 0 / 0.35);
 }
 
 /* ---------- Grilles ---------- */
@@ -588,6 +607,7 @@ a:hover {
   border-radius: 50%;
   background: var(--accent);
   flex-shrink: 0;
+  animation: pulse-dot 2.4s ease-in-out infinite;
 }
 
 @media (min-width: 960px) {

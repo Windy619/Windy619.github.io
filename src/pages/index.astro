@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import SectionHead from '../components/SectionHead.astro';
-import ProfilPanel from '../components/ProfilPanel.astro';
+import TerminalHero from '../components/TerminalHero.astro';
 import PoleCard from '../components/PoleCard.astro';
 import ProjetCard from '../components/ProjetCard.astro';
 import { site } from '../data/site';
@@ -18,17 +18,17 @@ const masterII = formations[0];
 ---
 
 <Layout
-  titre="Administrateur Systèmes, Réseaux & Cloud"
-  description="Administrateur systèmes, réseaux et cloud — 7 ans d’expérience. Azure, AlmaLinux, Docker, GitLab CI/CD, supervision Prometheus/Grafana, durcissement et développement Laravel."
+  titre="SRE · DevSecOps · Intégration IA"
+  description="Infrastructure fiable, sécurisée et automatisée, passionné par la conteneurisation. 7 ans d'expérience SRE, DevSecOps, Azure, AlmaLinux, Docker, GitLab CI/CD, supervision Prometheus/Grafana, intégration IA Mistral."
 >
   <section class="wrap hero">
     <div class="flow-28">
-      {site.disponibilite && <p class="dispo">{site.ville} — {site.disponibilite}</p>}
-      <h1>J’exploite, je sécurise et j’automatise les infrastructures qui portent vos applications.</h1>
+      {site.disponibilite && <p class="dispo">{site.ville} · {site.disponibilite}</p>}
+      <h1>Infrastructure fiable, sécurisée et automatisée. Passionné par la conteneurisation.</h1>
       <p class="hero__intro">
-        Administrateur systèmes, réseaux &amp; cloud — {site.experienceAnnees} ans d’expérience,
-        Master II en Administration et Sécurité Réseau. D’Azure et AlmaLinux aux pipelines GitLab
-        CI/CD, jusqu’au code Laravel qui tourne dessus.
+        SRE · DevSecOps · Intégration IA · {site.experienceAnnees} ans d'expérience,
+        Master II Administration &amp; Sécurité Réseau. Azure, AlmaLinux, GitLab CI/CD,
+        supervision Prometheus/Grafana, jusqu'aux pipelines Laravel et Mistral qui tournent dessus.
       </p>
       <div class="hero__actions">
         <a class="btn btn--primary" href="/projets/">Voir les projets</a>
@@ -36,7 +36,7 @@ const masterII = formations[0];
       </div>
     </div>
 
-    <ProfilPanel />
+    <TerminalHero />
   </section>
 
   <section class="wrap section" aria-labelledby="t-expertise">
@@ -67,7 +67,7 @@ const masterII = formations[0];
       numero="02"
       etiquette="Projets"
       id="t-projets"
-      titre="Quatre plateformes, conçues, sécurisées et suivies dans le temps."
+      titre="Cinq plateformes, conçues, sécurisées et suivies dans le temps."
       lien={{ libelle: 'Tous les projets', href: '/projets/' }}
     />
     <div class="grid-projets">

@@ -4,7 +4,7 @@ sousTitre: >-
   Plateforme de supervision d’infrastructure et de sécurité conçue et développée en solo : agent de
   collecte Bash/systemd, détection de brute-force SSH corrélée multi-serveurs, astreinte et escalade.
 ordre: 4
-statut: 'Projet personnel'
+statut: 'En développement continu'
 ton: 'ambre'
 contexte: 'Conception et développement solo'
 role: 'Développeur'

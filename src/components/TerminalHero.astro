@@ -1,0 +1,237 @@
+---
+/**
+ * TerminalHero.astro
+ * Terminal animé pour le hero — simule une session zsh avec les vraies données du profil.
+ * Pure CSS + JS inline, aucune dépendance externe.
+ */
+import { site } from '../data/site';
+---
+
+<div class="terminal" role="img" aria-label="Terminal animé présentant le profil">
+  <div class="terminal__chrome" aria-hidden="true">
+    <div class="terminal__dots">
+      <span class="terminal__dot td-red"></span>
+      <span class="terminal__dot td-yellow"></span>
+      <span class="terminal__dot td-green"></span>
+    </div>
+    <span class="terminal__title">~/portfolio — zsh</span>
+  </div>
+  <div class="terminal__body" id="term-body" aria-live="polite">
+    <p class="term-line"><span class="term-dim">Last login: Mon Sep  9 12:00:00 2026 on pts/0</span></p>
+  </div>
+</div>
+
+<script>
+  const SEQ = [
+    {
+      cmd: 'whoami',
+      out: [
+        '<span class="term-accent">windy619</span>  ·  JOHANESA Windy Olive',
+        '<span class="term-dim">SRE · DevSecOps · Intégration IA · 7 ans d\'expérience</span>',
+      ],
+    },
+    {
+      cmd: 'systemctl status devwatch',
+      out: [
+        '● <span class="term-accent">devwatch.service</span> : Supervision d\'infrastructure',
+        '   Active: <span class="term-ok">active (running)</span> since juil. 2026',
+        '   Tags:   brute-force SSH · enrichissement IP · astreinte · Mistral',
+      ],
+    },
+    {
+      cmd: 'cat /etc/stack.conf',
+      out: [
+        '<span class="term-dim">Ops      </span>  GitLab CI/CD · Docker · Prometheus · Grafana · Loki',
+        '<span class="term-dim">Cloud    </span>  Azure · OVH · AlmaLinux · Debian · OpenNebula',
+        '<span class="term-dim">Backend  </span>  Laravel 9–13 · PHP 8.x · MySQL',
+        '<span class="term-dim">Frontend </span>  Vue 3 · Inertia.js · TypeScript · Tailwind',
+        '<span class="term-dim">IA       </span>  Mistral OCR · n8n · automatisation webhooks',
+      ],
+    },
+    {
+      cmd: 'ping -c1 disponibilite',
+      out: [
+        'PING <span class="term-accent">Antananarivo, Madagascar</span> (UTC+3)',
+        '<span class="term-ok">1 packet transmitted, 1 received</span> · Ouvert aux missions remote',
+      ],
+    },
+  ];
+
+  const SPEED      = 38;   // ms par caractère
+  const JITTER     = 18;   // variation aléatoire ±
+  const POST_CMD   = 550;  // pause après frappe avant output
+  const POST_OUT   = 2200; // pause après output avant cmd suivante
+  const LOOP_PAUSE = 1200; // pause avant de repartir du début
+
+  const body = document.getElementById('term-body');
+  if (!body) throw new Error('term-body introuvable');
+
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+  function addPromptLine() {
+    const p = document.createElement('p');
+    p.className = 'term-line';
+    p.innerHTML =
+      '<span class="term-prompt" aria-hidden="true">❯</span>' +
+      '<span class="term-typed"></span>' +
+      '<span class="term-caret" aria-hidden="true"></span>';
+    body.appendChild(p);
+    body.scrollTop = body.scrollHeight;
+    return p;
+  }
+
+  async function typeCmd(promptEl, text) {
+    const typed = promptEl.querySelector('.term-typed');
+    for (const ch of text) {
+      typed.textContent += ch;
+      body.scrollTop = body.scrollHeight;
+      await sleep(SPEED + (Math.random() * JITTER * 2 - JITTER));
+    }
+  }
+
+  function finishPrompt(promptEl) {
+    promptEl.querySelector('.term-caret')?.remove();
+  }
+
+  function addOutput(lines) {
+    lines.forEach(html => {
+      const p = document.createElement('p');
+      p.className = 'term-line term-out';
+      p.innerHTML = html;
+      body.appendChild(p);
+    });
+    body.scrollTop = body.scrollHeight;
+  }
+
+  async function loop() {
+    // Garder uniquement la ligne "Last login"
+    while (body.children.length > 1) body.removeChild(body.lastChild);
+
+    for (const step of SEQ) {
+      const promptEl = addPromptLine();
+      await typeCmd(promptEl, step.cmd);
+      await sleep(POST_CMD);
+      finishPrompt(promptEl);
+      addOutput(step.out);
+      await sleep(POST_OUT);
+    }
+
+    await sleep(LOOP_PAUSE);
+    loop();
+  }
+
+  // Démarrage après le rendu initial
+  setTimeout(loop, 900);
+</script>
+
+<style>
+  /* ---- Châssis ---- */
+  .terminal {
+    font-family: var(--font-mono, monospace);
+    font-size: 12.5px;
+    line-height: 1.75;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
+    overflow: hidden;
+  }
+
+  /* ---- Barre de titre macOS-style ---- */
+  .terminal__chrome {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border-block-end: 1px solid var(--line);
+    user-select: none;
+  }
+
+  .terminal__dots {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .terminal__dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  .td-red    { background: #ff5f57; }
+  .td-yellow { background: #febc2e; }
+  .td-green  { background: #28c840; }
+
+  .terminal__title {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+    /* compensation optique pour centrer par rapport aux dots */
+    padding-inline-end: 66px;
+  }
+
+  /* ---- Corps ---- */
+  .terminal__body {
+    padding: 16px 20px 20px;
+    min-height: 220px;
+    max-height: 296px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    /* Scrollbar discrète */
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-3) transparent;
+  }
+
+  /* ---- Lignes ---- */
+  .term-line {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .term-out {
+    padding-inline-start: 20px;
+    color: var(--text-2);
+    margin-block-start: 1px;
+  }
+
+  /* ---- Éléments inline ---- */
+  .term-prompt {
+    color: var(--accent);
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+
+  .term-typed {
+    color: var(--text-strong);
+  }
+
+  /* Curseur clignotant blocs */
+  .term-caret {
+    display: inline-block;
+    width: 7px;
+    height: 1em;
+    background: var(--accent);
+    opacity: 0.85;
+    vertical-align: text-bottom;
+    margin-inline-start: 1px;
+    animation: term-blink 1s step-end infinite;
+  }
+
+  @keyframes term-blink {
+    0%, 100% { opacity: 0.85; }
+    50%       { opacity: 0; }
+  }
+
+  .term-accent { color: var(--accent); }
+  .term-ok     { color: #28c840; }
+  .term-dim    { color: var(--dim); }
+</style>
