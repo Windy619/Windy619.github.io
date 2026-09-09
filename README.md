@@ -1,4 +1,7 @@
-# Portfolio — JOHANESA Windy Olive
+# Portfolio · JOHANESA Windy Olive
+
+[![Deploiement GitHub Pages](https://github.com/Windy619/Windy619.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/Windy619/Windy619.github.io/actions/workflows/deploy.yml)
+🔗 **Site en ligne :** [https://windy619.github.io](https://windy619.github.io)
 
 Site statique construit avec **Astro 7**. Aucun serveur applicatif : la sortie est
 du HTML/CSS pur, déployable sur GitHub Pages.
@@ -38,7 +41,7 @@ du fichier devient l’URL : `/projets/mon-projet/`. Copiez l’en-tête d’un 
 existant comme modèle.
 
 Le schéma de validation vit dans `src/content.config.ts`. Une clé mal orthographiée
-ou manquante **fait échouer le build** au lieu de casser la page en silence — c’est
+ou manquante **fait échouer le build** au lieu de casser la page en silence, c'est
 volontaire.
 
 Le corps Markdown (sous l’en-tête `---`) est optionnel : il s’affiche en bas de la
@@ -47,7 +50,7 @@ fiche projet. C’est là que peuvent aller des notes plus longues sur une étud
 ### Captures d’écran
 
 Par convention de nommage : déposez `src/content/projets/<id>.png` à côté du
-Markdown du projet, et la capture remplace automatiquement le placeholder — sur
+Markdown du projet, et la capture remplace automatiquement le placeholder, sur
 la carte de la liste **et** sur la fiche. Rien à déclarer, rien à modifier dans
 le code.
 
@@ -75,7 +78,7 @@ dans `src/data/site.ts`.
 
 Un site statique ne peut pas recevoir de POST. Tant que `formulaireEndpoint` vaut
 `null` dans `src/data/site.ts`, la page Contact affiche les moyens de contact
-directs — pas de formulaire mort. Renseignez une URL de réception (route Laravel,
+directs (pas de formulaire mort). Renseignez une URL de réception (route Laravel,
 Cloudflare Worker, service tiers) et le formulaire apparaît automatiquement.
 
 ## Déploiement GitHub Pages
