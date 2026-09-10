@@ -254,7 +254,7 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
   /* ---- Châssis ---- */
   .terminal {
     font-family: var(--font-mono, monospace);
-    font-size: 12.5px;
+    font-size: 12px;
     line-height: 1.75;
     border: 1px solid var(--line-2);
     border-radius: var(--radius-lg);
@@ -301,7 +301,7 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
 
   /* ---- Corps ---- */
   .terminal__body {
-    padding: 16px 20px 20px;
+    padding: 16px 18px 20px;
     min-height: 220px;
     max-height: 296px;
     overflow-y: auto;
@@ -311,6 +311,14 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
     /* Scrollbar discrète */
     scrollbar-width: thin;
     scrollbar-color: var(--line-3) transparent;
+  }
+
+  /* Sur grand écran, les 17 lignes de la session tiennent d’un bloc. */
+  @media (min-width: 960px) {
+    .terminal__body {
+      min-height: 456px;
+      max-height: 456px;
+    }
   }
 
   /* ---- Lignes ---- */
@@ -324,7 +332,7 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
   }
 
   .term-out {
-    padding-inline-start: 20px;
+    padding-inline-start: 16px;
     color: var(--text-2);
     margin-block-start: 1px;
   }
