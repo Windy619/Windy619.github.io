@@ -3,7 +3,7 @@
     "id": "master-2",
     "ordre": 1,
     "periode": "2017 – 2019",
-    "intitule": "Master II — Administration et Sécurité Réseau",
+    "intitule": "Master II en Administration et Sécurité Réseau",
     "niveau": "Bac+5",
     "etablissement": "Institut de Formation Technique (IFT), Antananarivo",
     "detail": "Mémoire : implémentation de la sécurité d’accès d’un cloud open source basé sur OpenNebula avec SSH."
@@ -12,7 +12,7 @@
     "id": "master-1",
     "ordre": 2,
     "periode": "2016 – 2017",
-    "intitule": "Master I — Systèmes d’Information et Réseaux",
+    "intitule": "Master I en Systèmes d’Information et Réseaux",
     "niveau": "Bac+4",
     "etablissement": "Institut de Formation Technique (IFT), Antananarivo"
   },
@@ -20,7 +20,7 @@
     "id": "licence-pro",
     "ordre": 3,
     "periode": "2013 – 2015",
-    "intitule": "Licence Professionnelle en Informatique — Programmation",
+    "intitule": "Licence Professionnelle en Informatique, parcours Programmation",
     "niveau": "Bac+3",
     "etablissement": "Institut Supérieur Catholique de Menabe (ISCaMEN)"
   },

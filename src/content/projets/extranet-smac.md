@@ -25,7 +25,7 @@ kpis:
     note: 'via l’API Adresse data.gouv.fr'
 probleme:
   accroche: >-
-    Chaque client ne doit voir que son périmètre — et ce périmètre n’est pas plat : il suit une
+    Chaque client ne doit voir que son périmètre, et ce périmètre n’est pas plat : il suit une
     hiérarchie de structures qui peut descendre sur plusieurs niveaux.
   detail: >-
     Réécrire la règle de visibilité dans chacun des huit modules aurait garanti l’oubli tôt ou tard.

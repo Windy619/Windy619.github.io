@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { numero, etiquette, titre, lien, id } = Astro.props;
-const surtitre = numero ? `${numero} — ${etiquette}` : etiquette;
+const surtitre = numero ? `${numero} · ${etiquette}` : etiquette;
 ---
 
 <div class="section__head">

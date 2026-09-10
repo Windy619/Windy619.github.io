@@ -13,7 +13,7 @@ interface Props {
 }
 
 const { titre, description, titreBrut = false } = Astro.props;
-const titreComplet = titreBrut ? titre : `${titre} — ${site.nom}`;
+const titreComplet = titreBrut ? titre : `${titre} · ${site.nom}`;
 const canonique = new URL(Astro.url.pathname, Astro.site ?? 'https://windy619.github.io');
 ---
 

@@ -1,5 +1,5 @@
 ---
-titre: 'Documenthom OCR — DOXO'
+titre: 'Documenthom OCR (DOXO)'
 sousTitre: >-
   Plateforme multi-tenant de capture documentaire : cinq canaux surveillés, découpage automatique des
   flux de pages, extraction structurée par schéma JSON via Mistral OCR.
@@ -33,7 +33,7 @@ probleme:
     IMAP mélange les expéditeurs, et un dossier SharePoint reçoit tout sans distinction.
   detail: >-
     Il fallait donc un pipeline capable de reconnaître où un document s’arrête et où le suivant
-    commence, avant même de savoir ce qu’il contient — puis d’en extraire des champs exploitables,
+    commence, avant même de savoir ce qu’il contient, puis d’en extraire des champs exploitables,
     tout en garantissant qu’un client ne puisse jamais voir les documents d’un autre. C’est cette
     dernière contrainte qui a dicté l’architecture.
 decisions:
@@ -64,7 +64,7 @@ securite:
   - titre: 'Empreintes SHA-256 revérifiées chaque nuit'
     texte: "Toute altération d’un document archivé est détectée sans attendre qu’un utilisateur l’ouvre."
     icone: 'shield'
-  - titre: 'Outils RGPD — articles 15 et 17'
+  - titre: 'Outils RGPD : articles 15 et 17'
     texte: 'Droit d’accès et droit à l’effacement outillés dans l’application, non traités hors système.'
     icone: 'list'
   - titre: 'API REST versionnée via Sanctum'

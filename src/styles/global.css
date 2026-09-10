@@ -1,5 +1,5 @@
 /* =========================================================================
-   Portfolio — direction « console d'ops »
+   Portfolio · direction « console d'ops »
    Les variables de police (--font-display / --font-body / --font-mono) sont
    fournies par l'API Fonts d'Astro, déclarée dans astro.config.mjs.
    ========================================================================= */
@@ -739,9 +739,11 @@ a:hover {
 }
 
 .tirets li::before {
-  content: '—';
-  font-family: var(--font-mono, monospace);
-  font-size: 12px;
+  content: '';
+  inline-size: 10px;
+  block-size: 1.5px;
+  margin-block-start: 10px;
+  background: currentColor;
   color: var(--accent);
   flex-shrink: 0;
 }
@@ -1206,12 +1208,13 @@ a:hover {
 }
 
 .prose ul li::before {
-  content: '—';
+  content: '';
   position: absolute;
   inset-inline-start: 0;
-  color: var(--accent);
-  font-family: var(--font-mono, monospace);
-  font-size: 12px;
+  inset-block-start: 0.85em;
+  inline-size: 10px;
+  block-size: 1.5px;
+  background: var(--accent);
 }
 
 .prose code {

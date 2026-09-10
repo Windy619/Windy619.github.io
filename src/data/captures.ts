@@ -3,7 +3,7 @@ import type { ImageMetadata } from 'astro';
 /**
  * Les captures d'ecran sont resolues par convention de nommage : un fichier
  * `src/content/projets/<id>.png` est automatiquement associe au projet `<id>`.
- * Rien a declarer dans le Markdown — deposer le fichier suffit.
+ * Rien a declarer dans le Markdown : deposer le fichier suffit.
  *
  * Formats acceptes : png, jpg, jpeg, webp, avif.
  */

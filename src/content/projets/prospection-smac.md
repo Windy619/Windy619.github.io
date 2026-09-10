@@ -29,7 +29,7 @@ probleme:
     le quota de l’API d’itinéraires ni faire attendre l’utilisateur.
   detail: >-
     Chaque isochrone demandé à un service externe coûte un appel et plusieurs secondes. À l’échelle
-    d’une campagne de prospection, le calcul à la volée était intenable — il fallait déplacer le coût
+    d’une campagne de prospection, le calcul à la volée était intenable : il fallait déplacer le coût
     au moment du pré-calcul et ne recourir à l’API que pour ce qui manque réellement.
 decisions:
   - titre: 'Pré-calculer, puis se replier sur l’API'

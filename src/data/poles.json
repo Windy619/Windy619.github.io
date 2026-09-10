@@ -42,7 +42,7 @@
       "Supervision des serveurs dédiés avec Grafana, Prometheus, Loki et Alertmanager.",
       "Analyse des journaux système et applicatifs pour diagnostiquer et résoudre les incidents.",
       "Supervision de parc et de postes clients avec Nagios, Centreon, GLPI et OCS Inventory.",
-      "Gestion d’incidents complète — astreinte, escalade, post-mortem — implémentée dans DevWatch."
+      "Gestion d’incidents complète (astreinte, escalade, post-mortem), implémentée dans DevWatch."
     ],
     "terrain": "Dédiés OVH chez SA TARATASY, supervision Nagios/Centreon chez Madawatt, DevWatch en projet personnel.",
     "chips": ["Prometheus", "Grafana", "Loki"]
