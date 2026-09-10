@@ -1,127 +1,253 @@
 ---
 /**
  * TerminalHero.astro
- * Terminal animé pour le hero — simule une session zsh avec les vraies données du profil.
- * Pure CSS + JS inline, aucune dépendance externe.
+ * Terminal animé pour le hero : simule une session zsh alimentée par les
+ * données de src/data/site.ts.
+ * Pur CSS et module JS, aucune dépendance externe.
  */
 import { site } from '../data/site';
+
+type Segment = { texte: string; classe?: string };
+type Etape = { cmd: string; out: Segment[][] };
+
+const sequence: Etape[] = [
+  {
+    cmd: 'whoami',
+    out: [
+      [{ texte: 'windy619', classe: 'term-accent' }, { texte: `  ·  ${site.nom}` }],
+      [
+        {
+          texte: `SRE · DevSecOps · Intégration IA · ${site.experienceAnnees} ans d’expérience`,
+          classe: 'term-dim',
+        },
+      ],
+    ],
+  },
+  {
+    cmd: 'systemctl status devwatch',
+    out: [
+      [
+        { texte: '● ' },
+        { texte: 'devwatch.service', classe: 'term-accent' },
+        { texte: ' : Supervision d’infrastructure' },
+      ],
+      [
+        { texte: '   Active: ' },
+        { texte: 'active (running)', classe: 'term-ok' },
+        { texte: ' since juil. 2026' },
+      ],
+      [{ texte: '   Tags:   brute-force SSH · enrichissement IP · astreinte · Mistral' }],
+    ],
+  },
+  {
+    cmd: 'cat /etc/stack.conf',
+    out: [
+      [
+        { texte: 'Ops      ', classe: 'term-dim' },
+        { texte: '  GitLab CI/CD · Docker · Prometheus · Grafana · Loki' },
+      ],
+      [
+        { texte: 'Cloud    ', classe: 'term-dim' },
+        { texte: '  Azure · OVH · AlmaLinux · Debian · OpenNebula' },
+      ],
+      [
+        { texte: 'Backend  ', classe: 'term-dim' },
+        { texte: '  Laravel 9–13 · PHP 8.x · MySQL' },
+      ],
+      [
+        { texte: 'Frontend ', classe: 'term-dim' },
+        { texte: '  Vue 3 · Inertia.js · TypeScript · Tailwind' },
+      ],
+      [
+        { texte: 'IA       ', classe: 'term-dim' },
+        { texte: '  Mistral OCR · n8n · automatisation webhooks' },
+      ],
+    ],
+  },
+  {
+    cmd: 'ping -c1 disponibilite',
+    out: [
+      [
+        { texte: 'PING ' },
+        { texte: site.ville, classe: 'term-accent' },
+        { texte: ` (${site.fuseau})` },
+      ],
+      [
+        { texte: '1 packet transmitted, 1 received', classe: 'term-ok' },
+        { texte: site.disponibilite ? ` · ${site.disponibilite}` : '' },
+      ],
+    ],
+  },
+];
+
+// Résumé statique pour les lecteurs d’écran : le contenu animé duplique la
+// prose du hero, le terminal est donc exposé comme une image légendée.
+const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et intégration IA, ${site.experienceAnnees} ans d’expérience, ${site.ville}.`;
 ---
 
-<div class="terminal" role="img" aria-label="Terminal animé présentant le profil">
+<div
+  class="terminal"
+  role="img"
+  aria-label={resume}
+  data-terminal
+  data-sequence={JSON.stringify(sequence)}
+>
   <div class="terminal__chrome" aria-hidden="true">
     <div class="terminal__dots">
       <span class="terminal__dot td-red"></span>
       <span class="terminal__dot td-yellow"></span>
       <span class="terminal__dot td-green"></span>
     </div>
-    <span class="terminal__title">~/portfolio — zsh</span>
+    <span class="terminal__title">~/portfolio - zsh</span>
   </div>
-  <div class="terminal__body" id="term-body" aria-live="polite">
+  <div class="terminal__body" data-terminal-body>
     <p class="term-line"><span class="term-dim">Last login: Mon Sep  9 12:00:00 2026 on pts/0</span></p>
   </div>
 </div>
 
 <script>
-  const SEQ = [
-    {
-      cmd: 'whoami',
-      out: [
-        '<span class="term-accent">windy619</span>  ·  JOHANESA Windy Olive',
-        '<span class="term-dim">SRE · DevSecOps · Intégration IA · 7 ans d\'expérience</span>',
-      ],
-    },
-    {
-      cmd: 'systemctl status devwatch',
-      out: [
-        '● <span class="term-accent">devwatch.service</span> : Supervision d\'infrastructure',
-        '   Active: <span class="term-ok">active (running)</span> since juil. 2026',
-        '   Tags:   brute-force SSH · enrichissement IP · astreinte · Mistral',
-      ],
-    },
-    {
-      cmd: 'cat /etc/stack.conf',
-      out: [
-        '<span class="term-dim">Ops      </span>  GitLab CI/CD · Docker · Prometheus · Grafana · Loki',
-        '<span class="term-dim">Cloud    </span>  Azure · OVH · AlmaLinux · Debian · OpenNebula',
-        '<span class="term-dim">Backend  </span>  Laravel 9–13 · PHP 8.x · MySQL',
-        '<span class="term-dim">Frontend </span>  Vue 3 · Inertia.js · TypeScript · Tailwind',
-        '<span class="term-dim">IA       </span>  Mistral OCR · n8n · automatisation webhooks',
-      ],
-    },
-    {
-      cmd: 'ping -c1 disponibilite',
-      out: [
-        'PING <span class="term-accent">Antananarivo, Madagascar</span> (UTC+3)',
-        '<span class="term-ok">1 packet transmitted, 1 received</span> · Ouvert aux missions remote',
-      ],
-    },
-  ];
+  type Segment = { texte: string; classe?: string };
+  type Etape = { cmd: string; out: Segment[][] };
 
-  const SPEED      = 38;   // ms par caractère
-  const JITTER     = 18;   // variation aléatoire ±
-  const POST_CMD   = 550;  // pause après frappe avant output
-  const POST_OUT   = 2200; // pause après output avant cmd suivante
+  const SPEED = 38; // ms par caractère
+  const JITTER = 18; // variation aléatoire, en plus ou en moins
+  const POST_CMD = 550; // pause après la frappe, avant la sortie
+  const POST_OUT = 2200; // pause après la sortie, avant la commande suivante
   const LOOP_PAUSE = 1200; // pause avant de repartir du début
+  const DEMARRAGE = 900; // délai avant la première commande
+  const ATTENTE = 400; // intervalle de vérification de la visibilité
 
-  const body = document.getElementById('term-body');
-  if (!body) throw new Error('term-body introuvable');
+  const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
-  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
-  function addPromptLine() {
-    const p = document.createElement('p');
-    p.className = 'term-line';
-    p.innerHTML =
-      '<span class="term-prompt" aria-hidden="true">❯</span>' +
-      '<span class="term-typed"></span>' +
-      '<span class="term-caret" aria-hidden="true"></span>';
-    body.appendChild(p);
-    body.scrollTop = body.scrollHeight;
-    return p;
-  }
-
-  async function typeCmd(promptEl, text) {
-    const typed = promptEl.querySelector('.term-typed');
-    for (const ch of text) {
-      typed.textContent += ch;
-      body.scrollTop = body.scrollHeight;
-      await sleep(SPEED + (Math.random() * JITTER * 2 - JITTER));
+  function lireSequence(hote: HTMLElement): Etape[] {
+    const brut = hote.dataset.sequence;
+    if (!brut) return [];
+    try {
+      return JSON.parse(brut) as Etape[];
+    } catch {
+      return [];
     }
   }
 
-  function finishPrompt(promptEl) {
-    promptEl.querySelector('.term-caret')?.remove();
-  }
+  function demarrer(hote: HTMLElement, corps: HTMLElement, sequence: Etape[]) {
+    const defiler = () => {
+      corps.scrollTop = corps.scrollHeight;
+    };
 
-  function addOutput(lines) {
-    lines.forEach(html => {
-      const p = document.createElement('p');
-      p.className = 'term-line term-out';
-      p.innerHTML = html;
-      body.appendChild(p);
-    });
-    body.scrollTop = body.scrollHeight;
-  }
+    const creerSpan = (segment: Segment) => {
+      const span = document.createElement('span');
+      if (segment.classe) span.className = segment.classe;
+      span.textContent = segment.texte;
+      return span;
+    };
 
-  async function loop() {
-    // Garder uniquement la ligne "Last login"
-    while (body.children.length > 1) body.removeChild(body.lastChild);
+    const ajouterLigne = (classes: string) => {
+      const ligne = document.createElement('p');
+      ligne.className = classes;
+      corps.appendChild(ligne);
+      return ligne;
+    };
 
-    for (const step of SEQ) {
-      const promptEl = addPromptLine();
-      await typeCmd(promptEl, step.cmd);
-      await sleep(POST_CMD);
-      finishPrompt(promptEl);
-      addOutput(step.out);
-      await sleep(POST_OUT);
+    const ajouterInvite = () => {
+      const ligne = ajouterLigne('term-line');
+
+      const invite = document.createElement('span');
+      invite.className = 'term-prompt';
+      invite.setAttribute('aria-hidden', 'true');
+      invite.textContent = '❯';
+
+      const saisie = document.createElement('span');
+      saisie.className = 'term-typed';
+
+      const curseur = document.createElement('span');
+      curseur.className = 'term-caret';
+      curseur.setAttribute('aria-hidden', 'true');
+
+      ligne.append(invite, saisie, curseur);
+      defiler();
+      return { saisie, curseur };
+    };
+
+    const ajouterSortie = (lignes: Segment[][]) => {
+      for (const segments of lignes) {
+        ajouterLigne('term-line term-out').append(...segments.map(creerSpan));
+      }
+      defiler();
+    };
+
+    // Ne garder que la ligne "Last login" posée au rendu.
+    const reinitialiser = () => {
+      while (corps.children.length > 1) {
+        const dernier = corps.lastElementChild;
+        if (!dernier) break;
+        dernier.remove();
+      }
+    };
+
+    const taper = async (saisie: HTMLSpanElement, texte: string) => {
+      for (const caractere of texte) {
+        saisie.textContent += caractere;
+        defiler();
+        await sleep(SPEED + (Math.random() * JITTER * 2 - JITTER));
+      }
+    };
+
+    // Sans animation : la session est rendue d’un bloc, dans son état final.
+    const rendreStatique = () => {
+      reinitialiser();
+      for (const etape of sequence) {
+        const { saisie, curseur } = ajouterInvite();
+        saisie.textContent = etape.cmd;
+        curseur.remove();
+        ajouterSortie(etape.out);
+      }
+    };
+
+    let visible = true;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (entrees) => {
+          visible = entrees.some((entree) => entree.isIntersecting);
+        },
+        { threshold: 0.1 }
+      ).observe(hote);
     }
 
-    await sleep(LOOP_PAUSE);
-    loop();
+    const attendreVisible = async () => {
+      while (!visible || document.hidden) await sleep(ATTENTE);
+    };
+
+    const boucler = async () => {
+      for (;;) {
+        await attendreVisible();
+        reinitialiser();
+        for (const etape of sequence) {
+          const { saisie, curseur } = ajouterInvite();
+          await taper(saisie, etape.cmd);
+          await sleep(POST_CMD);
+          curseur.remove();
+          ajouterSortie(etape.out);
+          await sleep(POST_OUT);
+        }
+        await sleep(LOOP_PAUSE);
+      }
+    };
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      rendreStatique();
+      return;
+    }
+
+    setTimeout(() => void boucler(), DEMARRAGE);
   }
 
-  // Démarrage après le rendu initial
-  setTimeout(loop, 900);
+  const hote = document.querySelector<HTMLElement>('[data-terminal]');
+  const corps = hote?.querySelector<HTMLElement>('[data-terminal-body]');
+
+  if (hote && corps) {
+    const sequence = lireSequence(hote);
+    if (sequence.length > 0) demarrer(hote, corps, sequence);
+  }
 </script>
 
 <style>
