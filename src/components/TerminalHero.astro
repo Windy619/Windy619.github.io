@@ -10,6 +10,11 @@ import { site } from '../data/site';
 type Segment = { texte: string; classe?: string };
 type Etape = { cmd: string; out: Segment[][] };
 
+// Disponibilite et modalites de travail, telles que declarees dans site.ts.
+const dispo = [site.disponibilite, site.modalites].filter(
+  (valeur): valeur is string => Boolean(valeur)
+);
+
 const sequence: Etape[] = [
   {
     cmd: 'whoami',
@@ -77,7 +82,7 @@ const sequence: Etape[] = [
       ],
       [
         { texte: '1 packet transmitted, 1 received', classe: 'term-ok' },
-        { texte: site.disponibilite ? `· ${site.disponibilite}` : '' },
+        { texte: dispo.length > 0 ? `· ${dispo.join(' · ')}` : '' },
       ],
     ],
   },
@@ -85,7 +90,7 @@ const sequence: Etape[] = [
 
 // Résumé statique pour les lecteurs d’écran : le contenu animé duplique la
 // prose du hero, le terminal est donc exposé comme une image légendée.
-const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et intégration IA, ${site.experienceAnnees} ans d’expérience, ${site.ville}.`;
+const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et intégration IA, ${site.experienceAnnees} ans d’expérience, ${site.ville}. ${dispo.join(', ')}.`;
 ---
 
 <div

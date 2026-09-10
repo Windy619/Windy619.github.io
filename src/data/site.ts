@@ -12,7 +12,7 @@ export const site = {
   // Delai de reponse annonce. null = la mention n'est pas affichee.
   delaiReponse: null as string | null,
   // Modalites de travail. null = la mention n'est pas affichee.
-  modalites: null as string | null,
+  modalites: 'remote' as string | null,
   email: 'windy.liva@gmail.com',
   // Volontairement vide : le depot est public et son historique est permanent.
   // Ajoutez un numero ici et le bloc Telephone reapparait sur la page Contact.
