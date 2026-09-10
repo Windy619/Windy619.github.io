@@ -14,7 +14,7 @@ const sequence: Etape[] = [
   {
     cmd: 'whoami',
     out: [
-      [{ texte: 'windy619', classe: 'term-accent' }, { texte: `  ·  ${site.nom}` }],
+      [{ texte: 'windy619', classe: 'term-accent' }, { texte: `· ${site.nom}` }],
       [
         {
           texte: `SRE · DevSecOps · Intégration IA · ${site.experienceAnnees} ans d’expérience`,
@@ -27,40 +27,43 @@ const sequence: Etape[] = [
     cmd: 'systemctl status devwatch',
     out: [
       [
-        { texte: '● ' },
+        { texte: '●' },
         { texte: 'devwatch.service', classe: 'term-accent' },
-        { texte: ' : Supervision d’infrastructure' },
+        { texte: ': Supervision d’infrastructure' },
       ],
       [
-        { texte: '   Active: ' },
+        { texte: 'Active:', classe: 'term-cle term-cle--sys' },
         { texte: 'active (running)', classe: 'term-ok' },
-        { texte: ' since juil. 2026' },
+        { texte: 'since juil. 2026' },
       ],
-      [{ texte: '   Tags:   brute-force SSH · enrichissement IP · astreinte · Mistral' }],
+      [
+        { texte: 'Tags:', classe: 'term-cle term-cle--sys' },
+        { texte: 'brute-force SSH · enrichissement IP · astreinte · Mistral' },
+      ],
     ],
   },
   {
     cmd: 'cat /etc/stack.conf',
     out: [
       [
-        { texte: 'Ops      ', classe: 'term-dim' },
-        { texte: '  GitLab CI/CD · Docker · Prometheus · Grafana · Loki' },
+        { texte: 'Ops', classe: 'term-dim term-cle' },
+        { texte: 'GitLab CI/CD · Docker · Prometheus · Grafana · Loki' },
       ],
       [
-        { texte: 'Cloud    ', classe: 'term-dim' },
-        { texte: '  Azure · OVH · AlmaLinux · Debian · OpenNebula' },
+        { texte: 'Cloud', classe: 'term-dim term-cle' },
+        { texte: 'Azure · OVH · AlmaLinux · Debian · OpenNebula' },
       ],
       [
-        { texte: 'Backend  ', classe: 'term-dim' },
-        { texte: '  Laravel 9–13 · PHP 8.x · MySQL' },
+        { texte: 'Backend', classe: 'term-dim term-cle' },
+        { texte: 'Laravel 9–13 · PHP 8.x · MySQL' },
       ],
       [
-        { texte: 'Frontend ', classe: 'term-dim' },
-        { texte: '  Vue 3 · Inertia.js · TypeScript · Tailwind' },
+        { texte: 'Frontend', classe: 'term-dim term-cle' },
+        { texte: 'Vue 3 · Inertia.js · TypeScript · Tailwind' },
       ],
       [
-        { texte: 'IA       ', classe: 'term-dim' },
-        { texte: '  Mistral OCR · n8n · automatisation webhooks' },
+        { texte: 'IA', classe: 'term-dim term-cle' },
+        { texte: 'Mistral OCR · n8n · automatisation webhooks' },
       ],
     ],
   },
@@ -68,13 +71,13 @@ const sequence: Etape[] = [
     cmd: 'ping -c1 disponibilite',
     out: [
       [
-        { texte: 'PING ' },
+        { texte: 'PING' },
         { texte: site.ville, classe: 'term-accent' },
-        { texte: ` (${site.fuseau})` },
+        { texte: `(${site.fuseau})` },
       ],
       [
         { texte: '1 packet transmitted, 1 received', classe: 'term-ok' },
-        { texte: site.disponibilite ? ` · ${site.disponibilite}` : '' },
+        { texte: site.disponibilite ? `· ${site.disponibilite}` : '' },
       ],
     ],
   },
@@ -170,7 +173,8 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
 
     const ajouterSortie = (lignes: Segment[][]) => {
       for (const segments of lignes) {
-        ajouterLigne('term-line term-out').append(...segments.map(creerSpan));
+        const rendus = segments.filter((segment) => segment.texte !== '');
+        ajouterLigne('term-line term-out').append(...rendus.map(creerSpan));
       }
       defiler();
     };
@@ -363,6 +367,20 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
   @keyframes term-blink {
     0%, 100% { opacity: 0.85; }
     50%       { opacity: 0; }
+  }
+
+  /* Etiquette de colonne. Les espaces de calage en bout de segment ne
+     comptent pas dans la largeur d’un element flex : la colonne est donc
+     posee ici, et les valeurs s’alignent quel que soit le libelle. */
+  .term-cle {
+    inline-size: 5.4em;
+    flex-shrink: 0;
+  }
+
+  /* Sortie indentee, a la maniere de systemctl, sur la meme colonne. */
+  .term-cle--sys {
+    margin-inline-start: 1em;
+    inline-size: 4.4em;
   }
 
   .term-accent { color: var(--accent); }
