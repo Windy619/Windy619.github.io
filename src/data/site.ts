@@ -30,7 +30,6 @@ export const site = {
   // tiers, et le formulaire apparait automatiquement.
   formulaireEndpoint: null as string | null,
   experienceAnnees: 7,
-  diplome: 'Master II - Administration et Securite Reseau',
 } as const;
 
 export const nav = [
