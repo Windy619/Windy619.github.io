@@ -7,7 +7,7 @@ sousTitre: >-
 ordre: 5
 statut: 'Livré'
 ton: 'neutre'
-contexte: 'Développeur en équipe'
+contexte: 'SA TARATASY'
 role: 'Développeur en équipe'
 periode: '2023'
 categories: ['developpement', 'securite']
