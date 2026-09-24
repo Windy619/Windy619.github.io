@@ -5,9 +5,9 @@ import SectionHead from '../../components/SectionHead.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import PipelineDoxo from '../../components/PipelineDoxo.astro';
 import Icon from '../../components/Icon.astro';
-import CaptureZoom from '../../components/CaptureZoom.astro';
+import Galerie from '../../components/Galerie.astro';
 import { categoriesProjet } from '../../data/site';
-import { captureDe } from '../../data/captures';
+import { galerieDe } from '../../data/captures';
 
 export async function getStaticPaths() {
   const projets = (await getCollection('projets')).sort((a, b) => a.data.ordre - b.data.ordre);
@@ -28,7 +28,7 @@ const { Content } = await render(projet);
 const d = projet.data;
 const ambre = d.ton === 'ambre';
 const corps = (projet.body ?? '').trim();
-const capture = captureDe(projet.id);
+const galerie = galerieDe(projet.id, d);
 
 const libelleCat = (cat: string) =>
   categoriesProjet.find((c) => c.id === cat)?.libelle ?? cat;
@@ -91,13 +91,8 @@ const fiche: { cle: string; valeur: string }[] = [
 
   <div class="wrap" style="padding-block-end: var(--sec-y)">
     {
-      capture ? (
-        <CaptureZoom
-          src={capture}
-          alt={`${d.titre}, ${d.captureLegende ?? 'capture d’écran'}`}
-          legende={`${d.titre} · ${d.captureLegende ?? 'capture d’écran'}`}
-          loading="eager"
-        />
+      galerie.length > 0 ? (
+        <Galerie images={galerie} titre={d.titre} loading="eager" />
       ) : (
         <Placeholder legende={d.captureLegende} large />
       )

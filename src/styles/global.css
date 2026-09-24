@@ -1426,6 +1426,7 @@ a:hover {
 
 /* L'image tient dans l'ecran ; sur mobile, le cadre defile pour lire les details. */
 .zoom__cadre {
+  position: relative;
   flex-grow: 1;
   min-height: 0;
   display: flex;
@@ -1460,6 +1461,127 @@ a:hover {
 
 .zoom-actif {
   overflow: hidden;
+}
+
+/* Pagination de la galerie */
+.galerie__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-block-start: 14px;
+}
+
+.galerie__fleche {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.galerie__fleche:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.galerie__points {
+  display: flex;
+  align-items: center;
+}
+
+/* Zone de clic de 32 px autour d'un point de 8 px */
+.galerie__point {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.galerie__point::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dim);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.galerie__point:hover::before {
+  background: var(--muted);
+}
+
+.galerie__point[aria-current='true']::before {
+  background: var(--accent);
+  transform: scale(1.25);
+}
+
+.galerie__compteur,
+.zoom__compteur {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.zoom__legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.zoom__compteur {
+  color: var(--accent);
+}
+
+/* Fleches de navigation dans la modale, de part et d'autre de l'image */
+.zoom__nav {
+  position: absolute;
+  inset-block-start: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-block-start: -26px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border: 1px solid var(--line-3);
+  border-radius: 50%;
+  color: var(--text-strong);
+  cursor: pointer;
+}
+
+.zoom__nav:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.zoom__nav--precedent {
+  inset-inline-start: calc(var(--gutter) + 8px);
+}
+
+.zoom__nav--suivant {
+  inset-inline-end: calc(var(--gutter) + 8px);
+}
+
+@media (max-width: 700px) {
+  .zoom__nav {
+    position: fixed;
+    inset-block-start: auto;
+    inset-block-end: 20px;
+    margin: 0;
+  }
 }
 
 /* Masquage par filtre : doit gagner sur les regles de classe. */

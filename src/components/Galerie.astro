@@ -1,0 +1,212 @@
+---
+/**
+ * Galerie.astro
+ * Captures d'un projet : l'image courante s'ouvre en grand dans une fenetre
+ * modale (<dialog>). Avec plusieurs images, une pagination apparait sous
+ * l'image et des fleches permettent de naviguer dans la fenetre.
+ * Fermeture par le bouton, la touche Echap ou un clic en dehors de l'image ;
+ * fleches gauche et droite du clavier pour changer d'image.
+ */
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { ImageGalerie } from '../data/captures';
+
+interface Props {
+  images: ImageGalerie[];
+  /** Nom du projet, pour les libelles accessibles. */
+  titre: string;
+  /** `carte` : cadrage fixe des cartes de la liste des projets. */
+  variante?: 'page' | 'carte';
+  widths?: number[];
+  sizes?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const {
+  images,
+  titre,
+  variante = 'page',
+  widths = [720, 1120, 2240],
+  sizes = '(min-width: 1168px) 1120px, 100vw',
+  loading = 'lazy',
+} = Astro.props;
+
+const plusieurs = images.length > 1;
+const total = images.length;
+---
+
+<div class:list={['galerie', `galerie--${variante}`]} data-galerie>
+  <div class="galerie__scene">
+    {
+      images.map((img, i) => (
+        <button
+          class="zoom__declencheur"
+          type="button"
+          aria-haspopup="dialog"
+          data-galerie-ouvrir
+          hidden={i > 0}
+        >
+          <Image
+            class:list={['capture', variante === 'carte' && 'capture--carte']}
+            src={img.src}
+            alt={img.alt}
+            widths={widths}
+            sizes={sizes}
+            loading={i === 0 ? loading : 'lazy'}
+          />
+          <span class="zoom__indice" aria-hidden="true">
+            <Icon name="expand" size={16} />
+            Agrandir
+          </span>
+          <span class="visually-hidden">Agrandir l’image : {img.alt}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    plusieurs && (
+      <nav class="galerie__pagination" aria-label={`Captures de ${titre}`}>
+        <button class="galerie__fleche" type="button" data-galerie-precedent>
+          <Icon name="chevron-left" size={18} />
+          <span class="visually-hidden">Image précédente</span>
+        </button>
+        <div class="galerie__points">
+          {images.map((img, i) => (
+            <button
+              class="galerie__point"
+              type="button"
+              aria-label={`Image ${i + 1} sur ${total} : ${img.legende}`}
+              aria-current={i === 0 ? 'true' : undefined}
+              data-galerie-aller={i}
+            />
+          ))}
+        </div>
+        <span class="galerie__compteur" aria-live="polite" data-galerie-compteur>
+          1 / {total}
+        </span>
+        <button class="galerie__fleche" type="button" data-galerie-suivant>
+          <Icon name="chevron-right" size={18} />
+          <span class="visually-hidden">Image suivante</span>
+        </button>
+      </nav>
+    )
+  }
+
+  <dialog class="zoom__modale" aria-label={`Captures de ${titre}`} data-galerie-modale>
+    <div class="zoom__barre">
+      <p class="zoom__legende">
+        <span data-galerie-legende>{titre} · {images[0].legende}</span>
+        {plusieurs && <span class="zoom__compteur" data-galerie-compteur>1 / {total}</span>}
+      </p>
+      <button class="zoom__fermer" type="button" data-galerie-fermer>
+        <Icon name="close" size={20} />
+        <span class="visually-hidden">Fermer</span>
+      </button>
+    </div>
+    <div class="zoom__cadre" data-galerie-cadre>
+      {
+        plusieurs && (
+          <button
+            class="zoom__nav zoom__nav--precedent"
+            type="button"
+            data-galerie-precedent
+          >
+            <Icon name="chevron-left" size={24} />
+            <span class="visually-hidden">Image précédente</span>
+          </button>
+        )
+      }
+      {
+        images.map((img, i) => (
+          <Image
+            class="zoom__image"
+            src={img.src}
+            alt={img.alt}
+            widths={[1120, 2240]}
+            sizes="100vw"
+            loading="lazy"
+            data-galerie-grande
+            data-legende={`${titre} · ${img.legende}`}
+            hidden={i > 0}
+          />
+        ))
+      }
+      {
+        plusieurs && (
+          <button class="zoom__nav zoom__nav--suivant" type="button" data-galerie-suivant>
+            <Icon name="chevron-right" size={24} />
+            <span class="visually-hidden">Image suivante</span>
+          </button>
+        )
+      }
+    </div>
+  </dialog>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-galerie]').forEach((galerie) => {
+    const tous = <T extends Element>(sel: string) => [...galerie.querySelectorAll<T>(sel)];
+
+    const modale = galerie.querySelector<HTMLDialogElement>('[data-galerie-modale]');
+    const vignettes = tous<HTMLButtonElement>('[data-galerie-ouvrir]');
+    const grandes = tous<HTMLImageElement>('[data-galerie-grande]');
+    const points = tous<HTMLButtonElement>('[data-galerie-aller]');
+    const compteurs = tous<HTMLElement>('[data-galerie-compteur]');
+    const legende = galerie.querySelector<HTMLElement>('[data-galerie-legende]');
+    if (!modale || vignettes.length === 0) return;
+
+    const total = vignettes.length;
+    let courant = 0;
+
+    const afficher = (index: number) => {
+      courant = (index + total) % total;
+      vignettes.forEach((v, i) => (v.hidden = i !== courant));
+      grandes.forEach((g, i) => (g.hidden = i !== courant));
+      points.forEach((p, i) =>
+        i === courant ? p.setAttribute('aria-current', 'true') : p.removeAttribute('aria-current')
+      );
+      compteurs.forEach((c) => (c.textContent = `${courant + 1} / ${total}`));
+      if (legende) legende.textContent = grandes[courant]?.dataset.legende ?? '';
+    };
+
+    tous<HTMLButtonElement>('[data-galerie-precedent]').forEach((b) =>
+      b.addEventListener('click', () => afficher(courant - 1))
+    );
+    tous<HTMLButtonElement>('[data-galerie-suivant]').forEach((b) =>
+      b.addEventListener('click', () => afficher(courant + 1))
+    );
+    points.forEach((p) =>
+      p.addEventListener('click', () => afficher(Number(p.dataset.galerieAller)))
+    );
+
+    vignettes.forEach((v) =>
+      v.addEventListener('click', () => {
+        modale.showModal();
+        document.documentElement.classList.add('zoom-actif');
+      })
+    );
+
+    galerie
+      .querySelector<HTMLButtonElement>('[data-galerie-fermer]')
+      ?.addEventListener('click', () => modale.close());
+
+    // Un clic sur le fond (hors image, barre et fleches) ferme la modale.
+    modale.addEventListener('click', (e) => {
+      const cible = e.target as HTMLElement;
+      if (cible === modale || cible.hasAttribute('data-galerie-cadre')) modale.close();
+    });
+
+    // Echap est gere nativement par <dialog> ; les fleches changent d'image.
+    modale.addEventListener('keydown', (e) => {
+      if (total < 2) return;
+      if (e.key === 'ArrowLeft') afficher(courant - 1);
+      if (e.key === 'ArrowRight') afficher(courant + 1);
+    });
+
+    modale.addEventListener('close', () => {
+      document.documentElement.classList.remove('zoom-actif');
+      vignettes[courant]?.focus();
+    });
+  });
+</script>
