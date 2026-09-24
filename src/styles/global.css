@@ -1331,6 +1331,137 @@ a:hover {
   object-position: top left;
 }
 
+/* ---------- Agrandissement des captures ---------- */
+
+.zoom__declencheur {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  border-radius: var(--radius);
+}
+
+.zoom__indice {
+  position: absolute;
+  inset-block-end: 14px;
+  inset-inline-end: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding-inline: 12px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border: 1px solid var(--line-3);
+  border-radius: var(--radius);
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.85;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.zoom__declencheur:hover .zoom__indice,
+.zoom__declencheur:focus-visible .zoom__indice {
+  opacity: 1;
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.zoom__modale {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+.zoom__modale[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.zoom__modale::backdrop {
+  background: rgb(5 8 11 / 0.97);
+}
+
+.zoom__barre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px var(--gutter);
+}
+
+.zoom__legende {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.zoom__fermer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: var(--surface);
+  border: 1px solid var(--line-3);
+  border-radius: var(--radius);
+  color: var(--text-strong);
+  cursor: pointer;
+}
+
+.zoom__fermer:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+/* L'image tient dans l'ecran ; sur mobile, le cadre defile pour lire les details. */
+.zoom__cadre {
+  flex-grow: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--gutter) var(--gutter);
+  overflow: auto;
+  cursor: zoom-out;
+}
+
+.zoom__image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+  cursor: default;
+}
+
+@media (max-width: 700px) {
+  .zoom__cadre {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .zoom__image {
+    max-width: none;
+    max-height: none;
+    width: 200vw;
+  }
+}
+
+.zoom-actif {
+  overflow: hidden;
+}
+
 /* Masquage par filtre : doit gagner sur les regles de classe. */
 [hidden] {
   display: none !important;
