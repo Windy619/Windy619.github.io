@@ -1,7 +1,7 @@
 ---
 /**
  * TerminalHero.astro
- * Terminal animé pour le hero : simule une session zsh alimentée par les
+ * Terminal animé pour le hero : simule une session bash alimentée par les
  * données de src/data/site.ts.
  * Pur CSS et module JS, aucune dépendance externe.
  */
@@ -106,7 +106,7 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
       <span class="terminal__dot td-yellow"></span>
       <span class="terminal__dot td-green"></span>
     </div>
-    <span class="terminal__title">~/portfolio - zsh</span>
+    <span class="terminal__title">~/portfolio - bash</span>
   </div>
   <div class="terminal__body" data-terminal-body>
     <p class="term-line"><span class="term-dim">Last login: Mon Sep  9 12:00:00 2026 on pts/0</span></p>
@@ -162,7 +162,7 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
       const invite = document.createElement('span');
       invite.className = 'term-prompt';
       invite.setAttribute('aria-hidden', 'true');
-      invite.textContent = '❯';
+      invite.textContent = '$';
 
       const saisie = document.createElement('span');
       saisie.className = 'term-typed';
@@ -242,10 +242,14 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
       }
     };
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      rendreStatique();
-      return;
+    // La hauteur de la session complète est réservée d’emblée sur grand écran.
+    rendreStatique();
+    if (window.matchMedia('(min-width: 960px)').matches) {
+      corps.style.minHeight = `${corps.scrollHeight}px`;
     }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    reinitialiser();
 
     setTimeout(() => void boucler(), DEMARRAGE);
   }
@@ -259,7 +263,9 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
   }
 </script>
 
-<style>
+<!-- Styles globaux : les lignes sont créées par le script, elles ne portent
+     pas l’attribut de portée d’Astro. Toutes les classes sont préfixées. -->
+<style is:global>
   /* ---- Châssis ---- */
   .terminal {
     font-family: var(--font-mono, monospace);
@@ -322,11 +328,11 @@ const resume = `Terminal de démonstration : ${site.nom}, SRE, DevSecOps et int�
     scrollbar-color: var(--line-3) transparent;
   }
 
-  /* Sur grand écran, les 17 lignes de la session tiennent d’un bloc. */
+  /* Sur grand écran, la session tient d’un bloc : sa hauteur finale est
+     mesurée par le script, sans vide en bas ni saut de mise en page. */
   @media (min-width: 960px) {
     .terminal__body {
-      min-height: 456px;
-      max-height: 456px;
+      max-height: none;
     }
   }
 
