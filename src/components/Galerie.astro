@@ -13,6 +13,8 @@ import type { ImageGalerie } from '../data/captures';
 
 interface Props {
   images: ImageGalerie[];
+  /** Identifiant du projet, pour la mesure d'audience (evenement zoom-<id>). */
+  id: string;
   /** Nom du projet, pour les libelles accessibles. */
   titre: string;
   /** `carte` : cadrage fixe des cartes de la liste des projets. */
@@ -24,6 +26,7 @@ interface Props {
 
 const {
   images,
+  id,
   titre,
   variante = 'page',
   widths = [720, 1120, 2240],
@@ -35,7 +38,7 @@ const plusieurs = images.length > 1;
 const total = images.length;
 ---
 
-<div class:list={['galerie', `galerie--${variante}`]} data-galerie>
+<div class:list={['galerie', `galerie--${variante}`]} data-galerie={id}>
   <div class="galerie__scene">
     {
       images.map((img, i) => (
@@ -145,6 +148,8 @@ const total = images.length;
 </div>
 
 <script>
+  import { compterEvenement } from '../scripts/mesure';
+
   document.querySelectorAll<HTMLElement>('[data-galerie]').forEach((galerie) => {
     const tous = <T extends Element>(sel: string) => [...galerie.querySelectorAll<T>(sel)];
 
@@ -184,6 +189,7 @@ const total = images.length;
       v.addEventListener('click', () => {
         modale.showModal();
         document.documentElement.classList.add('zoom-actif');
+        compterEvenement(`zoom-${galerie.dataset.galerie}`);
       })
     );
 

@@ -42,6 +42,13 @@ const canonique = new URL(Astro.url.pathname, Astro.site ?? 'https://windy619.gi
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-body" preload />
     <Font cssVariable="--font-mono" />
+
+    <!-- Mesure d'audience GoatCounter, sans cookie. Voir src/scripts/mesure.ts. -->
+    <script
+      is:inline
+      data-goatcounter="https://windy619.goatcounter.com/count"
+      async
+      src="https://gc.zgo.at/count.js"></script>
   </head>
 
   <body>
@@ -51,5 +58,10 @@ const canonique = new URL(Astro.url.pathname, Astro.site ?? 'https://windy619.gi
       <slot />
     </main>
     <Footer />
+
+    <script>
+      import { suivreLiens } from '../scripts/mesure';
+      suivreLiens();
+    </script>
   </body>
 </html>

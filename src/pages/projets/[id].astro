@@ -92,7 +92,7 @@ const fiche: { cle: string; valeur: string }[] = [
   <div class="wrap" style="padding-block-end: var(--sec-y)">
     {
       galerie.length > 0 ? (
-        <Galerie images={galerie} titre={d.titre} loading="eager" />
+        <Galerie id={projet.id} images={galerie} titre={d.titre} loading="eager" />
       ) : (
         <Placeholder legende={d.captureLegende} large />
       )
