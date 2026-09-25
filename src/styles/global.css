@@ -8,22 +8,18 @@
   color-scheme: dark;
 
   /* Fonds et surfaces */
-  --bg: #0b0f14;
-  --bg-texture: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgb(255 255 255 / 0.012) 3px,
-    rgb(255 255 255 / 0.012) 4px
-  );
-  --surface: #111823;
-  --surface-2: #0f151e;
-  --surface-3: #0d131b;
+  --bg: #0a0d0c;
+  /* Trame de points, facon papier de schema : un point tous les 24 px */
+  --bg-texture: radial-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1.2px);
+  --bg-texture-size: 24px 24px;
+  --surface: #111614;
+  --surface-2: #0e1311;
+  --surface-3: #0c100f;
 
   /* Filets */
-  --line: #1e2a36;
-  --line-2: #22303d;
-  --line-3: #2b3a49;
+  --line: #1c2522;
+  --line-2: #222d29;
+  --line-3: #2c3a35;
 
   /* Texte */
   --text-strong: #f3f8fc;
@@ -86,6 +82,7 @@ html {
 body {
   margin: 0;
   background: var(--bg-texture), var(--bg);
+  background-size: var(--bg-texture-size), auto;
   color: var(--text);
   font-family: var(--font-body, system-ui, sans-serif);
   font-size: 16px;
@@ -672,9 +669,18 @@ a:hover {
   flex-grow: 1;
 }
 
+/* Pastille teintee : le calque clair du duotone ressort sur un fond d'accent */
 .pole__icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: 44px;
+  block-size: 44px;
   color: var(--accent);
-  display: flex;
+  background: color-mix(in oklch, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in oklch, var(--accent) 28%, transparent);
+  border-radius: var(--radius-lg);
 }
 
 /* Bloc détaillé (page expertise) */

@@ -9,9 +9,9 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: 'Space Grotesk',
+      name: 'Bricolage Grotesque',
       cssVariable: '--font-display',
-      weights: [500, 700],
+      weights: [500, 600, 700],
       subsets: ['latin', 'latin-ext'],
       fallbacks: ['system-ui', 'sans-serif'],
     },
