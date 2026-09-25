@@ -24,6 +24,8 @@ const projets = defineCollection({
     stack: z.array(z.string()),
     services: z.array(z.string()).default([]),
     captureLegende: z.string().optional(),
+    // Legende de chaque capture, dans l'ordre de la galerie (prime sur captureLegende).
+    captureLegendes: z.array(z.string()).optional(),
     kpis: z
       .array(z.object({ valeur: z.string(), label: z.string(), note: z.string().optional() }))
       .default([]),

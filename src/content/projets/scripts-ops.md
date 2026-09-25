@@ -13,7 +13,7 @@ periode: '2023 – 2026'
 categories: ['sre', 'automatisation', 'securite']
 stack: ['Bash', 'GNU Make', 'Docker', 'SSH']
 services: ['AIDE', 'systemd / cron', 'sendmail', 'mysqldump', 'Composer', 'Vite']
-captureLegende: 'Pipeline de déploiement'
+captureLegende: 'Schéma des flux d’exploitation'
 kpis:
   - valeur: '3'
     label: 'Niveaux de sauvegarde'
