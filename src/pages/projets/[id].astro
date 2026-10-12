@@ -141,10 +141,9 @@ const fiche: { cle: string; valeur: string }[] = [
       <section class="wrap section" aria-labelledby="t-decisions">
         <SectionHead etiquette="Décisions techniques" id="t-decisions" />
         <div class="grid-2">
-          {d.decisions.map((dec, i) => (
+          {d.decisions.map((dec) => (
             <article class="card">
-              <p class="meta">{String(i + 1).padStart(2, '0')}</p>
-              <h3 style="margin-block-start: 12px; font-size: 1.25rem; font-weight: 500">
+              <h3 style="font-size: 1.25rem; font-weight: 500">
                 {dec.titre}
               </h3>
               <p style="margin-block-start: 12px; font-size: 14px; line-height: 1.6; color: var(--muted)">

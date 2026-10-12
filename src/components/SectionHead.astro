@@ -1,18 +1,16 @@
 ---
 interface Props {
-  numero?: string;
   etiquette: string;
   titre?: string;
   lien?: { libelle: string; href: string };
   id?: string;
 }
 
-const { numero, etiquette, titre, lien, id } = Astro.props;
-const surtitre = numero ? `${numero} · ${etiquette}` : etiquette;
+const { etiquette, titre, lien, id } = Astro.props;
 ---
 
 <div class="section__head">
-  <p class="eyebrow" id={id}>{surtitre}</p>
+  <p class="eyebrow" id={id}>{etiquette}</p>
   <div class="rule"></div>
 </div>
 

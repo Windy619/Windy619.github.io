@@ -35,7 +35,6 @@ const outils = (await getCollection('outils')).sort(parOrdre);
                 <span class="pole__icone">
                   <Icon name={pole.data.icone} size={22} />
                 </span>
-                <span class="meta">{String(pole.data.ordre).padStart(2, '0')}</span>
               </div>
               <h3>{pole.data.titre}</h3>
               <p class="pole-row__accroche">{pole.data.accroche}</p>

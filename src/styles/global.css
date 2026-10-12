@@ -1,5 +1,5 @@
 /* =========================================================================
-   Portfolio · direction « console d'ops »
+   Portfolio · direction « console d'ops », encre pervenche
    Les variables de police (--font-display / --font-body / --font-mono) sont
    fournies par l'API Fonts d'Astro, déclarée dans astro.config.mjs.
    ========================================================================= */
@@ -7,35 +7,35 @@
 :root {
   color-scheme: dark;
 
-  /* Fonds et surfaces */
-  --bg: #0a0d0c;
+  /* Fonds et surfaces : noir d'encre legerement violace, accorde a l'accent */
+  --bg: #0c0b10;
   /* Trame de points, facon papier de schema : un point tous les 24 px */
   --bg-texture: radial-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1.2px);
   --bg-texture-size: 24px 24px;
-  --surface: #111614;
-  --surface-2: #0e1311;
-  --surface-3: #0c100f;
+  --surface: #14131a;
+  --surface-2: #100f15;
+  --surface-3: #0e0d13;
 
   /* Filets */
-  --line: #1c2522;
-  --line-2: #222d29;
-  --line-3: #2c3a35;
+  --line: #211f2a;
+  --line-2: #2a2935;
+  --line-3: #66647a;
 
-  /* Texte */
-  --text-strong: #f3f8fc;
-  --text: #e7eef6;
-  --text-2: #b8c7d6;
-  --muted: #93a4b5;
-  --muted-2: #6b7c8d;
-  --dim: #55677a;
-  --dim-2: #3f4e5c;
+  /* Texte : ratios mesures sur --bg et --surface, AAA sauf --dim-2 (AA) */
+  --text-strong: #f5f4f9;
+  --text: #e8e6ef;
+  --text-2: #c4c1d2;
+  --muted: #a9a5bb;
+  --muted-2: #a39fb6;
+  --dim: #a09cb3;
+  --dim-2: #837f98;
 
-  /* Accents */
-  --accent: oklch(0.76 0.13 160);
-  --accent-hover: oklch(0.86 0.11 160);
-  --accent-line: oklch(0.55 0.1 160);
-  --amber: oklch(0.78 0.13 62);
-  --amber-line: oklch(0.46 0.08 62);
+  /* Accents : la pervenche de Madagascar, et l'ambre pour les projets en cours */
+  --accent: oklch(0.78 0.105 285);
+  --accent-hover: oklch(0.87 0.08 285);
+  --accent-line: oklch(0.55 0.1 285);
+  --amber: oklch(0.8 0.13 68);
+  --amber-line: oklch(0.5 0.08 68);
 
   /* Trame */
   --gutter: clamp(20px, 4vw, 24px);
@@ -59,11 +59,11 @@ html {
 @keyframes pulse-dot {
   0%, 100% {
     opacity: 1;
-    box-shadow: 0 0 0 0 oklch(0.76 0.13 160 / 0.5);
+    box-shadow: 0 0 0 0 oklch(0.78 0.105 285 / 0.5);
   }
   60% {
     opacity: 0.85;
-    box-shadow: 0 0 0 5px oklch(0.76 0.13 160 / 0);
+    box-shadow: 0 0 0 5px oklch(0.78 0.105 285 / 0);
   }
 }
 
@@ -190,13 +190,17 @@ a:hover {
   min-width: 24px;
 }
 
+/* Surtitre ecrit comme un commentaire bash, dans la langue du terminal d'accueil */
 .eyebrow {
   font-family: var(--font-mono, monospace);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--accent);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   white-space: nowrap;
+}
+
+.eyebrow::before {
+  content: '# ';
+  color: var(--dim-2);
 }
 
 .section__title {
@@ -403,69 +407,74 @@ a:hover {
   width: 100%;
 }
 
+/* La pile se lit comme une liste de paquets, sans pastilles */
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .chip {
-  font-family: var(--font-mono, monospace);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   color: var(--muted);
-  border: 1px solid var(--line-2);
-  padding: 3px 7px;
-  border-radius: 3px;
+}
+
+.chip:has(+ .chip)::after {
+  content: '·';
+  margin-inline: 8px;
+  color: var(--dim-2);
 }
 
 .chip--cat {
   color: var(--accent);
-  border-color: var(--line-3);
 }
 
 .chip--cat-ambre {
   color: var(--amber);
-  border-color: var(--line-3);
 }
 
 .chips__sep {
   width: 1px;
   align-self: stretch;
-  background: var(--line-2);
-  margin-inline: 3px;
+  background: var(--line-3);
+  margin-inline: 12px;
 }
 
+/* Le statut est un voyant : un point colore, puis le texte */
 .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-mono, monospace);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 4px 8px;
-  border-radius: 3px;
+  font-size: 12px;
+  color: var(--text-2);
 }
 
-.badge--accent {
+.badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dim-2);
+}
+
+.badge--accent::before {
   background: var(--accent);
-  color: var(--bg);
 }
 
 .badge--ambre {
-  background: var(--amber);
-  color: var(--bg);
+  color: var(--amber);
 }
 
-.badge--neutre {
-  color: var(--muted);
-  border: 1px solid var(--line-2);
+.badge--ambre::before {
+  background: var(--amber);
 }
 
 .meta {
   font-family: var(--font-mono, monospace);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 12px;
   color: var(--dim);
 }
 
@@ -591,10 +600,8 @@ a:hover {
   align-items: center;
   gap: 10px;
   font-family: var(--font-mono, monospace);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--accent);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .dispo::before {
@@ -708,11 +715,9 @@ a:hover {
 
 .pole-row__terrain h4 {
   font-family: var(--font-mono, monospace);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
-  letter-spacing: 0.1em;
   color: var(--dim);
-  text-transform: uppercase;
 }
 
 .pole-row__terrain p {
@@ -817,9 +822,7 @@ a:hover {
 .kpi dd {
   margin: 4px 0 0;
   font-family: var(--font-mono, monospace);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 12px;
   color: var(--dim);
 }
 
@@ -853,11 +856,9 @@ a:hover {
 }
 
 .placeholder b {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
-  letter-spacing: 0.1em;
   color: var(--dim);
-  text-transform: uppercase;
 }
 
 .placeholder span {
@@ -882,9 +883,7 @@ a:hover {
   display: inline-flex;
   align-items: center;
   font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 12px;
   color: var(--muted);
   background: transparent;
   border: 1px solid var(--line-2);
@@ -1056,9 +1055,7 @@ a:hover {
 
 .coord__label {
   font-family: var(--font-mono, monospace);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 12px;
   color: var(--dim);
 }
 
@@ -1088,9 +1085,7 @@ a:hover {
 
 .champ > span {
   font-family: var(--font-mono, monospace);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 12px;
   color: var(--muted-2);
 }
 
