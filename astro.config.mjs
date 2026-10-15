@@ -9,7 +9,7 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: 'Bricolage Grotesque',
+      name: 'Familjen Grotesk',
       cssVariable: '--font-display',
       weights: [500, 600, 700],
       subsets: ['latin', 'latin-ext'],
@@ -25,7 +25,7 @@ export default defineConfig({
     },
     {
       provider: fontProviders.google(),
-      name: 'JetBrains Mono',
+      name: 'Red Hat Mono',
       cssVariable: '--font-mono',
       weights: [400, 500],
       subsets: ['latin', 'latin-ext'],
